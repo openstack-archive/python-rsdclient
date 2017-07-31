@@ -1,0 +1,6 @@
+[run]
+branch = True
+source = python-rsdclient
+
+[report]
+ignore_errors = True
