@@ -11,7 +11,7 @@ Note that this is a hard requirement.
 * Free software: Apache license
 * Documentation: http://docs.openstack.org/developer/python-rsdclient
 * Source: http://git.openstack.org/cgit/openstack/python-rsdclient
-* Bugs: http://bugs.launchpad.net/https://launchpad.net/python-rsdclient
+* Bugs: https://launchpad.net/python-rsdclient
 
 Features
 --------
