@@ -3,3 +3,6 @@
 # process, which may cause wedges in the gate later.
 
 pbr>=2.0 # Apache-2.0
+osc-lib>=1.7.0 # Apache-2.0
+# TODO(lin.yang): Use rsd-lib instead of sushy after it released
+sushy>=0.1.0  # Apache-2.0
