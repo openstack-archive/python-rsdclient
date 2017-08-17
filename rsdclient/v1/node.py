@@ -24,3 +24,6 @@ class NodeManager(base.Manager):
         # TODO(lin.yang): should return id of new composed node, like
         # 'redfish/v1/Nodes/1'
         return self.client.get_node_collection().compose_node(properites)
+
+    def delete(self, node_uri):
+        self.client.get_node(node_uri).delete_node()

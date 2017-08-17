@@ -39,3 +39,24 @@ class ComposeNode(command.Command):
         rsd_client.node.compose(args)
         print("Request to compose node %s was accepted"
               % parsed_args.name)
+
+
+class DeleteNode(command.Command):
+    _description = "Delete a Node"
+
+    def get_parser(self, prog_name):
+        parser = super(DeleteNode, self).get_parser(prog_name)
+        parser.add_argument(
+            'uri',
+            nargs='+',
+            metavar='<uri>',
+            help='URI of the node(s) to delete.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        for node in parsed_args.uri:
+            rsd_client.node.delete(node)
+            print("Node {0} has been deleted.".format(node))
