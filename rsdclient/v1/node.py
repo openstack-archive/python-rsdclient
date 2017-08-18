@@ -30,9 +30,8 @@ class NodeManager(base.Manager):
         return os.path.join(self.nodes_path, node_id)
 
     def compose(self, properites):
-        # TODO(lin.yang): should return id of new composed node, like
-        # 'redfish/v1/Nodes/1'
-        return self.client.get_node_collection().compose_node(properites)
+        node_uri = self.client.get_node_collection().compose_node(properites)
+        return node_uri[len(self.nodes_path) + 1:]
 
     def delete(self, node_id):
         self.client.get_node(self._get_node_uri(node_id)).delete_node()

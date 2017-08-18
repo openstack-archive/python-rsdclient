@@ -36,9 +36,8 @@ class ComposeNode(command.Command):
         args = {
             'Name': parsed_args.name
         }
-        rsd_client.node.compose(args)
-        print("Request to compose node %s was accepted"
-              % parsed_args.name)
+        node_id = rsd_client.node.compose(args)
+        print("Node {0} has been composed.".format(node_id))
 
 
 class DeleteNode(command.Command):

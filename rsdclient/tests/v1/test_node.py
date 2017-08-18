@@ -29,11 +29,13 @@ class ClusterManagerTest(testtools.TestCase):
 
     def test_compose_node(self):
         mock_node_collection = mock.Mock()
+        mock_node_collection.compose_node.return_value = '/redfish/v1/Nodes/1'
         self.client.get_node_collection.return_value = mock_node_collection
-        self.mgr.compose({'Name': 'fake_name'})
+        result = self.mgr.compose({'Name': 'fake_name'})
         self.mgr.client.get_node_collection.assert_called_once()
         mock_node_collection.compose_node.assert_called_once_with(
             {'Name': 'fake_name'})
+        self.assertEqual(result, '1')
 
     def test_delete_node(self):
         node_id = '1'
