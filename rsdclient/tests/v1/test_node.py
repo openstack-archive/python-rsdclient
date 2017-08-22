@@ -16,13 +16,14 @@
 import mock
 import testtools
 
+from rsdclient.tests.common import fakes
 from rsdclient.v1 import node
 
 
-class ClusterManagerTest(testtools.TestCase):
+class NodeTest(testtools.TestCase):
 
     def setUp(self):
-        super(ClusterManagerTest, self).setUp()
+        super(NodeTest, self).setUp()
         self.client = mock.Mock()
         self.client._nodes_path = '/redfish/v1/Nodes'
         self.mgr = node.NodeManager(self.client)
@@ -44,3 +45,9 @@ class ClusterManagerTest(testtools.TestCase):
         self.mgr.delete(node_id)
         self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
         mock_node.delete_node.assert_called_once()
+
+    def test_show_node(self):
+        self.client.get_node.return_value = fakes.FakeNode()
+        result = self.mgr.show('1')
+        expected = fakes.FAKE_NODE_PYTHON_DICT
+        self.assertEqual(result, expected)
