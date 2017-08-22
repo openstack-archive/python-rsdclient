@@ -13,6 +13,8 @@
 #   under the License.
 #
 
+import json
+
 from osc_lib.command import command
 
 
@@ -59,3 +61,22 @@ class DeleteNode(command.Command):
         for node in parsed_args.node:
             rsd_client.node.delete(node)
             print("Node {0} has been deleted.".format(node))
+
+
+class ShowNode(command.Command):
+    _description = "Display node details"
+
+    def get_parser(self, prog_name):
+        parser = super(ShowNode, self).get_parser(prog_name)
+        parser.add_argument(
+            'node',
+            metavar='<node>',
+            help='ID of the node.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        node_detail = rsd_client.node.show(parsed_args.node)
+        print("{0}".format(json.dumps(node_detail, indent=2)))

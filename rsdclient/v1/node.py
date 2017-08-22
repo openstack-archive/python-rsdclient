@@ -16,6 +16,7 @@
 import os
 
 from rsdclient.common import base
+from rsdclient.common import utils
 
 
 class NodeManager(base.Manager):
@@ -35,3 +36,7 @@ class NodeManager(base.Manager):
 
     def delete(self, node_id):
         self.client.get_node(self._get_node_uri(node_id)).delete_node()
+
+    def show(self, node_id):
+        node = self.client.get_node(self._get_node_uri(node_id))
+        return utils.extract_attr(node)
