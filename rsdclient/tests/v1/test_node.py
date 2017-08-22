@@ -51,3 +51,25 @@ class NodeTest(testtools.TestCase):
         result = self.mgr.show('1')
         expected = fakes.FAKE_NODE_PYTHON_DICT
         self.assertEqual(result, expected)
+
+    def test_list_node(self):
+        mock_node_collection = mock.Mock()
+        mock_node_collection.members_identities = ('/redfish/v1/Nodes/1',)
+        self.mgr.client.get_node_collection.return_value = mock_node_collection
+        self.mgr.client.get_node.return_value = fakes.FakeNode()
+
+        expected = '+----------+------+--------------------------------------'\
+                   '+------------------+\n'\
+                   '| Identity | Name |                 UUID                 '\
+                   '|   Description    |\n'\
+                   '+----------+------+--------------------------------------'\
+                   '+------------------+\n'\
+                   '|    1     | Test | fd011520-86a2-11e7-b4d4-5d323196a3e4 '\
+                   '| Node for testing |\n'\
+                   '+----------+------+--------------------------------------'\
+                   '+------------------+'
+
+        result = self.mgr.list()
+        self.mgr.client.get_node_collection.assert_called_once()
+        self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
+        self.assertEqual(str(result), expected)

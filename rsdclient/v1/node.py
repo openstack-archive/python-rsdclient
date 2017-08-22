@@ -40,3 +40,11 @@ class NodeManager(base.Manager):
     def show(self, node_id):
         node = self.client.get_node(self._get_node_uri(node_id))
         return utils.extract_attr(node)
+
+    def list(self):
+        node_collection = self.client.get_node_collection()
+        nodes = [utils.extract_attr(self.client.get_node(node_uri))
+                 for node_uri in node_collection.members_identities]
+        node_info_table = utils.print_dict(
+            nodes, ["Identity", "Name", "UUID", "Description"])
+        return node_info_table
