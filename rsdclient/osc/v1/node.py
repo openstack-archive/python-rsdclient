@@ -80,3 +80,13 @@ class ShowNode(command.Command):
         rsd_client = self.app.client_manager.rsd
         node_detail = rsd_client.node.show(parsed_args.node)
         print("{0}".format(json.dumps(node_detail, indent=2)))
+
+
+class ListNode(command.Command):
+    _description = "List all composed nodes"
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        node_list = rsd_client.node.list()
+        print(node_list)

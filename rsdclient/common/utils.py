@@ -13,6 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import prettytable
 import six
 
 
@@ -41,3 +42,12 @@ def extract_attr(redfish_obj):
         return None
 
     return result
+
+
+def print_dict(obj_list, field_names):
+    pt = prettytable.PrettyTable(field_names=field_names)
+
+    for element in obj_list:
+        pt.add_row([element.get(i.lower(), None) for i in field_names])
+
+    return pt
