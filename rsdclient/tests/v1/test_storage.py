@@ -49,3 +49,10 @@ class NodeTest(testtools.TestCase):
         self.mgr.client.get_storage_service.assert_called_once_with(
             '/redfish/v1/Services/1')
         self.assertEqual(str(result), expected)
+
+    def test_show_storage(self):
+        self.client.get_storage_service.return_value = \
+            fakes.FakeStorageSerice()
+        result = self.mgr.show('1')
+        expected = fakes.FAKE_STORAGE_PYTHON_DICT
+        self.assertEqual(result, expected)

@@ -13,7 +13,7 @@
 #   under the License.
 #
 
-from rsdclient.common import utils
+import mock
 
 
 FAKE_NODE_PYTHON_DICT = {
@@ -78,6 +78,54 @@ class FakeNode(object):
         self.memory_summary = FakeMemorySummary()
         self.uuid = "fd011520-86a2-11e7-b4d4-5d323196a3e4"
 
+FAKE_STORAGE_PYTHON_DICT = {
+    'description': 'Storage Service for Testing',
+    'identity': '1',
+    'name': 'Storage Service',
+    'redfish_version': '1.0.0',
+    'remote_targets': [{
+        'addresses': [{
+            'iSCSI': {
+                'TargetIQN': 'base_logical_volume_target',
+                'TargetLUN': [{
+                    'LUN': 1,
+                    'LogicalDrive': {
+                        '@odata.id': '/redfish/v1/Services/1/LogicalDrives/2'
+                    }
+                }],
+                'TargetPortalIP': '10.2.0.4',
+                'TargetPortalPort': 3260
+            }
+        }],
+        'identity': '1',
+        'initiator': [{'iSCSI': {'InitiatorIQN': 'ALL'}}],
+        'redfish_version': '1.0.0',
+        'target_type': 'iSCSITargets'
+    }],
+    'physical_drives': [{
+        'capacity_gib': 931,
+        'drive_type': 'HDD',
+        'identity': '1',
+        'interface': 'SATA',
+        'manufacturer': 'fake manufacture',
+        'model': 'ST1000NM0033-9ZM',
+        'redfish_version': '1.0.0',
+        'rpm': 7200,
+        'serial_number': 'Z1W23Q3V'
+    }],
+    'logical_drives': [{
+        'bootable': True,
+        'capacity_gib': 5589,
+        'drive_type': 'LVM',
+        'identity': '2',
+        'image': 'fake image',
+        'mode': 'LVG',
+        'protected': False,
+        'redfish_version': '1.0.0',
+        'snapshot': False
+    }]
+}
+
 
 class FakeRemoteTarget(object):
 
@@ -136,9 +184,9 @@ class FakeStorageSerice(object):
         self.identity = '1'
         self.name = 'Storage Service'
         self.redfish_version = '1.0.0'
-        self.remote_targets = [FakeRemoteTarget()]
-        self.physical_drives = [FakePhysicalDrive()]
-        self.logical_drives = [FakeLogicalDrive()]
-
-
-FAKE_STORAGE_PYTHON_DICT = utils.extract_attr(FakeStorageSerice())
+        self.remote_targets = mock.Mock()
+        self.remote_targets.get_members.return_value = [FakeRemoteTarget()]
+        self.physical_drives = mock.Mock()
+        self.physical_drives.get_members.return_value = [FakePhysicalDrive()]
+        self.logical_drives = mock.Mock()
+        self.logical_drives.get_members.return_value = [FakeLogicalDrive()]
