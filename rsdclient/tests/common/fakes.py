@@ -13,6 +13,8 @@
 #   under the License.
 #
 
+from rsdclient.common import utils
+
 
 FAKE_NODE_PYTHON_DICT = {
     "description": "Node for testing",
@@ -75,3 +77,68 @@ class FakeNode(object):
         self.processor_summary = FakeProcessorSummary()
         self.memory_summary = FakeMemorySummary()
         self.uuid = "fd011520-86a2-11e7-b4d4-5d323196a3e4"
+
+
+class FakeRemoteTarget(object):
+
+    def __init__(self):
+        self.addresses = [{
+            'iSCSI': {
+                'TargetIQN': 'base_logical_volume_target',
+                'TargetLUN': [{
+                    'LUN': 1,
+                    'LogicalDrive': {
+                        '@odata.id': '/redfish/v1/Services/1/LogicalDrives/2'
+                    }
+                }],
+                'TargetPortalIP': '10.2.0.4',
+                'TargetPortalPort': 3260
+            }
+        }]
+        self.identity = '1'
+        self.initiator = [{'iSCSI': {'InitiatorIQN': 'ALL'}}]
+        self.redfish_version = '1.0.0'
+        self.target_type = 'iSCSITargets'
+
+
+class FakePhysicalDrive(object):
+
+    def __init__(self):
+        self.capacity_gib = 931
+        self.drive_type = 'HDD'
+        self.identity = '1'
+        self.interface = 'SATA'
+        self.manufacturer = 'fake manufacture'
+        self.model = 'ST1000NM0033-9ZM'
+        self.redfish_version = '1.0.0'
+        self.rpm = 7200
+        self.serial_number = 'Z1W23Q3V'
+
+
+class FakeLogicalDrive(object):
+
+    def __init__(self):
+        self.bootable = True
+        self.capacity_gib = 5589
+        self.drive_type = 'LVM'
+        self.identity = '2'
+        self.image = 'fake image'
+        self.mode = 'LVG'
+        self.protected = False
+        self.redfish_version = '1.0.0'
+        self.snapshot = False
+
+
+class FakeStorageSerice(object):
+
+    def __init__(self):
+        self.description = 'Storage Service for Testing'
+        self.identity = '1'
+        self.name = 'Storage Service'
+        self.redfish_version = '1.0.0'
+        self.remote_targets = [FakeRemoteTarget()]
+        self.physical_drives = [FakePhysicalDrive()]
+        self.logical_drives = [FakeLogicalDrive()]
+
+
+FAKE_STORAGE_PYTHON_DICT = utils.extract_attr(FakeStorageSerice())

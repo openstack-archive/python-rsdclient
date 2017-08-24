@@ -13,16 +13,14 @@
 #   under the License.
 #
 
-import rsd_lib
-
-from rsdclient.v1 import node
-from rsdclient.v1 import storage
+from rsdclient.common import command
 
 
-class Client(object):
+class ListStorage(command.Command):
+    _description = "List all storage services"
 
-    def __init__(self, base_url, username, password, verify=True):
-        self.client = rsd_lib.RSDLib(base_url, username, password,
-                                     verify=verify)
-        self.node = node.NodeManager(self.client)
-        self.storage = storage.StorageManager(self.client)
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        storage_service_list = rsd_client.storage.list()
+        print(storage_service_list)
