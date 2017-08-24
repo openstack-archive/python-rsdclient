@@ -16,7 +16,7 @@
 import rsd_lib
 
 from rsdclient.v1 import node
-from rsdclient.v1 import storage
+from rsdclient.v1 import storage_service
 
 
 class Client(object):
@@ -25,4 +25,5 @@ class Client(object):
         self.client = rsd_lib.RSDLib(base_url, username, password,
                                      verify=verify)
         self.node = node.NodeManager(self.client)
-        self.storage = storage.StorageManager(self.client)
+        self.storage_service = \
+            storage_service.StorageServiceManager(self.client)

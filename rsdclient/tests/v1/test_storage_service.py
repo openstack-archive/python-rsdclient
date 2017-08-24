@@ -17,7 +17,7 @@ import mock
 import testtools
 
 from rsdclient.tests.common import fakes
-from rsdclient.v1 import storage
+from rsdclient.v1 import storage_service
 
 
 class NodeTest(testtools.TestCase):
@@ -26,7 +26,7 @@ class NodeTest(testtools.TestCase):
         super(NodeTest, self).setUp()
         self.client = mock.Mock()
         self.client._storage_service_path = '/redfish/v1/Services'
-        self.mgr = storage.StorageManager(self.client)
+        self.mgr = storage_service.StorageServiceManager(self.client)
 
     def test_list_storage(self):
         mock_storage_collection = mock.Mock()
@@ -49,3 +49,10 @@ class NodeTest(testtools.TestCase):
         self.mgr.client.get_storage_service.assert_called_once_with(
             '/redfish/v1/Services/1')
         self.assertEqual(str(result), expected)
+
+    def test_show_storage(self):
+        self.client.get_storage_service.return_value = \
+            fakes.FakeStorageSerice()
+        result = self.mgr.show('1')
+        expected = fakes.FAKE_STORAGE_PYTHON_DICT
+        self.assertEqual(result, expected)

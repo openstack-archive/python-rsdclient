@@ -13,14 +13,36 @@
 #   under the License.
 #
 
+import json
+
 from rsdclient.common import command
 
 
-class ListStorage(command.Command):
+class ListStorageServices(command.Command):
     _description = "List all storage services"
 
     def take_action(self, parsed_args):
         self.log.debug("take_action(%s)", parsed_args)
         rsd_client = self.app.client_manager.rsd
-        storage_service_list = rsd_client.storage.list()
+        storage_service_list = rsd_client.storage_service.list()
         print(storage_service_list)
+
+
+class ShowStorageServices(command.Command):
+    _description = "Display storage service details"
+
+    def get_parser(self, prog_name):
+        parser = super(ShowStorageServices, self).get_parser(prog_name)
+        parser.add_argument(
+            'storageservice',
+            metavar='<storage service>',
+            help='ID of the storage service.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        storage_detail = rsd_client.storage_service.show(
+            parsed_args.storageservice)
+        print("{0}".format(json.dumps(storage_detail, indent=2)))
