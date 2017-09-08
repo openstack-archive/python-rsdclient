@@ -52,3 +52,7 @@ class NodeManager(base.Manager):
     def attach(self, node_id, endpoint=None, capacity=None):
         node = self.client.get_node(self._get_node_uri(node_id))
         node.attach_endpoint(endpoint, capacity)
+
+    def detach(self, node_id, endpoint):
+        node = self.client.get_node(self._get_node_uri(node_id))
+        node.detach_endpoint(endpoint)

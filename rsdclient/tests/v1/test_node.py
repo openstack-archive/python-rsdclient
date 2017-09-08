@@ -81,3 +81,11 @@ class NodeTest(testtools.TestCase):
         self.mgr.attach(node_id, 'fake uri', 10)
         self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
         mock_node.attach_endpoint.assert_called_once_with('fake uri', 10)
+
+    def test_detach(self):
+        node_id = '1'
+        mock_node = mock.Mock()
+        self.client.get_node.return_value = mock_node
+        self.mgr.detach(node_id, 'fake uri')
+        self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
+        mock_node.detach_endpoint.assert_called_once_with('fake uri')

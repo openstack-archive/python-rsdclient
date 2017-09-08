@@ -310,3 +310,24 @@ class AttachEndpoint(command.Command):
         rsd_client = self.app.client_manager.rsd
         rsd_client.node.attach(parsed_args.node, parsed_args.resource,
                                parsed_args.capacity)
+
+
+class DetachEndpoint(command.Command):
+    _description = "Detach drive from a composed node"
+
+    def get_parser(self, prog_name):
+        parser = super(DetachEndpoint, self).get_parser(prog_name)
+        parser.add_argument(
+            'node',
+            metavar='<node>',
+            help='ID of the node.')
+        parser.add_argument(
+            '--resource',
+            metavar='<resource uri>',
+            help='URI of the specific resource to detach from node.')
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        rsd_client.node.detach(parsed_args.node, parsed_args.resource)
