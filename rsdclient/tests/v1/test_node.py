@@ -73,3 +73,11 @@ class NodeTest(testtools.TestCase):
         self.mgr.client.get_node_collection.assert_called_once()
         self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
         self.assertEqual(str(result), expected)
+
+    def test_attach(self):
+        node_id = '1'
+        mock_node = mock.Mock()
+        self.client.get_node.return_value = mock_node
+        self.mgr.attach(node_id, 'fake uri', 10)
+        self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
+        mock_node.attach_endpoint.assert_called_once_with('fake uri', 10)

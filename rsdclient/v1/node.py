@@ -48,3 +48,7 @@ class NodeManager(base.Manager):
         node_info_table = utils.print_dict(
             nodes, ["Identity", "Name", "UUID", "Description"])
         return node_info_table
+
+    def attach(self, node_id, endpoint=None, capacity=None):
+        node = self.client.get_node(self._get_node_uri(node_id))
+        node.attach_endpoint(endpoint, capacity)
