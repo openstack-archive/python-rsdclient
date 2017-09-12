@@ -13,19 +13,14 @@
 #   under the License.
 #
 
-import rsd_lib
-
-from rsdclient.v1 import fabric
-from rsdclient.v1 import node
-from rsdclient.v1 import storage_service
+from rsdclient.common import command
 
 
-class Client(object):
+class ListFabric(command.Command):
+    _description = "List all Fabrics"
 
-    def __init__(self, base_url, username, password, verify=True):
-        self.client = rsd_lib.RSDLib(base_url, username, password,
-                                     verify=verify)
-        self.node = node.NodeManager(self.client)
-        self.storage_service = \
-            storage_service.StorageServiceManager(self.client)
-        self.fabric = fabric.FabricManager(self.client)
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        fabric_list = rsd_client.fabric.list()
+        print(fabric_list)
