@@ -1,0 +1,8 @@
+Code-Review+2: Nate Potter <nathaniel.potter@intel.com>
+Workflow+1: Nate Potter <nathaniel.potter@intel.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 13 Sep 2017 17:05:40 +0000
+Reviewed-on: https://review.openstack.org/502888
+Project: openstack/python-rsdclient
+Branch: refs/heads/master
