@@ -190,3 +190,98 @@ class FakeStorageSerice(object):
         self.physical_drives.get_members.return_value = [FakePhysicalDrive()]
         self.logical_drives = mock.Mock()
         self.logical_drives.get_members.return_value = [FakeLogicalDrive()]
+
+
+FAKE_FABRIC_PYTHON_DICT = {
+    'description': 'PCIe Fabric',
+    'fabric_type': 'PCIe',
+    'identity': 'PCIe',
+    'max_zones': 5,
+    'name': 'PCIe Fabric',
+    'zones': [{
+        'description': 'PCIe Zone 1',
+        'identity': '1',
+        'links': {
+            'endpoint_identities': (
+                '/redfish/v1/Fabrics/PCIe/Endpoints/HostRootComplex1',
+                '/redfish/v1/Fabrics/PCIe/Endpoints/NVMeDrivePF2'
+            )
+        },
+        'name': 'PCIe Zone 1'
+    }],
+    'endpoints': [{
+        'connected_entities': [{
+            'entity_link': '/redfish/v1/Chassis/PCIeSwitch1/Drives/Disk.Bay.0',
+            'entity_role': 'Target',
+            'entity_type': 'Drive',
+            'identifiers': [{
+                'name': '00000000-0000-0000-0000-000000000000',
+                'name_format': 'UUID'
+            }]
+        }],
+        'description': 'The PCIe Physical function of an 850GB NVMe drive',
+        'host_reservation_memory': 1000,
+        'identifiers': [{
+            'name': '00000000-0000-0000-0000-000000000000',
+            'name_format': 'UUID'
+        }],
+        'identity': 'NVMeDrivePF1',
+        'name': 'NVMe Drive',
+        'protocol': 'PCIe',
+        'redfish_version': '1.0.2',
+        'redundancy': []
+    }]
+}
+
+
+class FakeEndpoint(object):
+
+    def __init__(self):
+        self.connected_entities = [{
+            'entity_link': '/redfish/v1/Chassis/PCIeSwitch1/Drives/Disk.Bay.0',
+            'entity_role': 'Target',
+            'entity_type': 'Drive',
+            'identifiers': [{
+                'name': '00000000-0000-0000-0000-000000000000',
+                'name_format': 'UUID'
+            }]
+        }]
+        self.description = 'The PCIe Physical function of an 850GB NVMe drive'
+        self.host_reservation_memory = 1000
+        self.identifiers = [{
+            'name': '00000000-0000-0000-0000-000000000000',
+            'name_format': 'UUID'
+        }]
+        self.identity = 'NVMeDrivePF1'
+        self.name = 'NVMe Drive'
+        self.protocol = 'PCIe'
+        self.redfish_version = '1.0.2'
+        self.redundancy = []
+
+
+class FakeZone(object):
+
+    def __init__(self):
+        self.description = 'PCIe Zone 1'
+        self.identity = '1'
+        self.name = 'PCIe Zone 1'
+        self.links = {
+            'endpoint_identities': (
+                '/redfish/v1/Fabrics/PCIe/Endpoints/HostRootComplex1',
+                '/redfish/v1/Fabrics/PCIe/Endpoints/NVMeDrivePF2'
+            )
+        }
+
+
+class FakeFabric(object):
+
+    def __init__(self):
+        self.description = 'PCIe Fabric'
+        self.fabric_type = 'PCIe'
+        self.identity = 'PCIe'
+        self.max_zones = 5
+        self.name = 'PCIe Fabric'
+        self.endpoints = mock.Mock()
+        self.endpoints.get_members.return_value = [FakeEndpoint()]
+        self.zones = mock.Mock()
+        self.zones.get_members.return_value = [FakeZone()]

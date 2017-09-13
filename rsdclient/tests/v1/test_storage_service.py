@@ -20,10 +20,10 @@ from rsdclient.tests.common import fakes
 from rsdclient.v1 import storage_service
 
 
-class NodeTest(testtools.TestCase):
+class StorageServiceTest(testtools.TestCase):
 
     def setUp(self):
-        super(NodeTest, self).setUp()
+        super(StorageServiceTest, self).setUp()
         self.client = mock.Mock()
         self.client._storage_service_path = '/redfish/v1/Services'
         self.mgr = storage_service.StorageServiceManager(self.client)
