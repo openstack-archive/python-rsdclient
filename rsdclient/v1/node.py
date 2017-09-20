@@ -30,8 +30,14 @@ class NodeManager(base.Manager):
     def _get_node_uri(self, node_id):
         return os.path.join(self.nodes_path, node_id)
 
-    def compose(self, properites):
-        node_uri = self.client.get_node_collection().compose_node(properites)
+    def compose(self, name=None, description=None, processor_req=None,
+                memory_req=None, remote_drive_req=None, local_drive_req=None,
+                ethernet_interface_req=None):
+        node_uri = self.client.get_node_collection().compose_node(
+            name=name, description=description, processor_req=processor_req,
+            memory_req=memory_req, remote_drive_req=remote_drive_req,
+            local_drive_req=local_drive_req,
+            ethernet_interface_req=ethernet_interface_req)
         return node_uri[len(self.nodes_path) + 1:]
 
     def delete(self, node_id):
