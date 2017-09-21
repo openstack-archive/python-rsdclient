@@ -28,6 +28,8 @@ def extract_attr(redfish_obj):
         return redfish_obj
     if isinstance(redfish_obj, list):
         return [extract_attr(i) for i in redfish_obj]
+    if isinstance(redfish_obj, tuple):
+        return tuple(extract_attr(i) for i in redfish_obj)
     if isinstance(redfish_obj, dict):
         return {i: extract_attr(redfish_obj[i]) for i in redfish_obj}
 
