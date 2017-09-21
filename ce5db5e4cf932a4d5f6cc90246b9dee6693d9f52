@@ -1,0 +1,10 @@
+Code-Review+2: Lin Yang <lin.a.yang@intel.com>
+Code-Review+1: Nguyen Van Trung <trungnv@vn.fujitsu.com>
+Code-Review+2: Nate Potter <nathaniel.potter@intel.com>
+Workflow+1: Nate Potter <nathaniel.potter@intel.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 21 Sep 2017 18:04:27 +0000
+Reviewed-on: https://review.openstack.org/502443
+Project: openstack/python-rsdclient
+Branch: refs/heads/master
