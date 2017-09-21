@@ -19,13 +19,13 @@ from rsdclient.common import command
 
 
 ARGUMENTS_NAME_MAPPING = {
-    'name': 'Name',
-    'description': 'Description',
-    'processor': 'Processors',
-    'memory': 'Memory',
-    'remote_drives': 'RemoteDrives',
-    'local_drives': 'LocalDrives',
-    'ethernet': 'EthernetInterfaces'
+    'name': 'name',
+    'description': 'description',
+    'processor': 'processor_req',
+    'memory': 'memory_req',
+    'remote_drives': 'remote_drive_req',
+    'local_drives': 'local_drive_req',
+    'ethernet': 'ethernet_interface_req'
 }
 
 
@@ -231,7 +231,7 @@ class ComposeNode(command.Command):
         for i in ARGUMENTS_NAME_MAPPING:
             if getattr(parsed_args, i):
                 args[ARGUMENTS_NAME_MAPPING[i]] = getattr(parsed_args, i)
-        node_id = rsd_client.node.compose(args)
+        node_id = rsd_client.node.compose(**args)
         print("Node {0} has been composed.".format(node_id))
 
 
