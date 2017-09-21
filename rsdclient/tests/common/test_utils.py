@@ -21,8 +21,16 @@ from rsdclient.tests.common import fakes
 
 class UtilsTest(testtools.TestCase):
 
-    def test_compose_node(self):
+    def test_extract_attr(self):
         fake_node = fakes.FakeNode()
         result = utils.extract_attr(fake_node)
         expected = fakes.FAKE_NODE_PYTHON_DICT
         self.assertEqual(result, expected)
+
+    def test_str2boolean(self):
+        self.assertEqual(utils.str2boolean("True"), True)
+        self.assertEqual(utils.str2boolean("true"), True)
+        self.assertEqual(utils.str2boolean("False"), False)
+        self.assertEqual(utils.str2boolean("false"), False)
+        self.assertEqual(utils.str2boolean("fake string"), "fake string")
+        self.assertEqual(utils.str2boolean(""), "")

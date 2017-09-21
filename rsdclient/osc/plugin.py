@@ -19,6 +19,9 @@ import logging
 
 from osc_lib import utils
 
+from rsdclient.common import utils as rsdclient_utils
+
+
 LOG = logging.getLogger(__name__)
 
 DEFAULT_API_VERSION = '1.2'
@@ -37,10 +40,11 @@ def make_client(instance):
         API_VERSIONS)
     LOG.debug('Instantiating RSD client: %s', rsd_client)
 
-    client = rsd_client(base_url=instance._cli_options.rsd_url,
-                        username=instance._cli_options.rsd_username,
-                        password=instance._cli_options.rsd_password,
-                        verify=instance._cli_options.rsd_disable_verify)
+    client = rsd_client(
+        base_url=instance._cli_options.rsd_url,
+        username=instance._cli_options.rsd_username,
+        password=instance._cli_options.rsd_password,
+        verify=rsdclient_utils.str2boolean(instance._cli_options.rsd_verify))
     return client
 
 
@@ -52,28 +56,41 @@ def build_option_parser(parser):
         metavar='<rsd-api-version>',
         default=utils.env(
             'RSD_API_VERSION',
-            default=DEFAULT_API_VERSION),
+            default='1.3'),
         help='RSD API version, default=' +
              DEFAULT_API_VERSION +
              ' (Env: RSD_API_VERSION)')
     parser.add_argument(
         '--rsd-url',
         metavar='<rsd-url>',
-        default='https://localhost:8443/redfish/v1/',
-        help='The base URL to RSD pod manager')
+        default=utils.env(
+            'RSD_URL',
+            default='https://localhost:8443/redfish/v1/'),
+        help='The base URL to RSD pod manager (Env: RSD_URL)')
     parser.add_argument(
         '--rsd-username',
         metavar='<rsd-username>',
-        default='admin',
-        help='User account with admin access')
+        default=utils.env(
+            'RSD_USERNAME',
+            default='admin'),
+        help='User account with admin access (Env: RSD_USERNAME)')
     parser.add_argument(
         '--rsd-password',
         metavar='<rsd-password>',
-        default='admin',
-        help='User account password')
+        default=utils.env(
+            'RSD_PASSWORD',
+            default='admin'),
+        help='User account password (Env: RSD_PASSWORD)')
     parser.add_argument(
-        '--rsd-disable-verify',
-        action='store_false',
-        help='If this is set, it will ignore verifying the SSL ' +
-             'certificate')
+        '--rsd-verify',
+        metavar='<rsd-username>',
+        default=utils.env(
+            'RSD_VERIFY',
+            default='True'),
+        help='Either a boolean value, a path to a CA_BUNDLE file or directory'
+             ' with certificates of trusted CAs. If set to True it will '
+             'verify the host certificates; if False it will ignore verifying'
+             ' the SSL certificate; if it\'s a path the driver will use the '
+             'specified certificate or one of the certificates in the '
+             'directory. Defaults to True. (Env: RSD_VERIFY)')
     return parser

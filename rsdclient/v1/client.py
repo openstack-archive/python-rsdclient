@@ -23,6 +23,19 @@ from rsdclient.v1 import storage_service
 class Client(object):
 
     def __init__(self, base_url, username, password, verify=True):
+        """A client class to control RSD pod manager
+
+        :param base_url: The base URL to RSD pod manager.
+        :param username: User account with admin access privilege
+        :param password: User account password
+        :param verify: Either a boolean value, a path to a CA_BUNDLE
+            file or directory with certificates of trusted CAs. If set to
+            True it will verify the host certificates; if False it will
+            ignore verifying the SSL certificate; if it's a path the driver
+            will use the specified certificate or one of the certificates
+            in the directory. Defaults to True.
+        """
+
         self.client = rsd_lib.RSDLib(base_url, username, password,
                                      verify=verify)
         self.node = node.NodeManager(self.client)

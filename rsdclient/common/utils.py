@@ -51,3 +51,14 @@ def print_dict(obj_list, field_names):
         pt.add_row([element.get(i.lower(), None) for i in field_names])
 
     return pt
+
+
+def str2boolean(string_obj):
+    """Convert string 'True' and 'False' to corresponding boolean obj"""
+
+    if string_obj.lower() == "true":
+        return True
+    elif string_obj.lower() == "false":
+        return False
+    else:
+        return string_obj
