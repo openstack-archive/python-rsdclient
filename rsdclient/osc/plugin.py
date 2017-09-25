@@ -56,7 +56,7 @@ def build_option_parser(parser):
         metavar='<rsd-api-version>',
         default=utils.env(
             'RSD_API_VERSION',
-            default='1.3'),
+            default=DEFAULT_API_VERSION),
         help='RSD API version, default=' +
              DEFAULT_API_VERSION +
              ' (Env: RSD_API_VERSION)')
