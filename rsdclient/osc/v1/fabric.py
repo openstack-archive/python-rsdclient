@@ -19,6 +19,8 @@ from rsdclient.common import command
 
 
 class ListFabric(command.Command):
+    """List all fabrics."""
+
     _description = "List all Fabrics"
 
     def take_action(self, parsed_args):
@@ -29,6 +31,8 @@ class ListFabric(command.Command):
 
 
 class ShowFabric(command.Command):
+    """Show fabric details."""
+
     _description = "Display fabric details"
 
     def get_parser(self, prog_name):

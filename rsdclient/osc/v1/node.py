@@ -30,7 +30,9 @@ ARGUMENTS_NAME_MAPPING = {
 
 
 class ComposeNode(command.Command):
-    _description = "Compose a Node"
+    """Compose a node."""
+
+    _description = "Compose a node"
 
     def get_parser(self, prog_name):
         parser = super(ComposeNode, self).get_parser(prog_name)
@@ -236,7 +238,9 @@ class ComposeNode(command.Command):
 
 
 class DeleteNode(command.Command):
-    _description = "Delete a Node"
+    """Delete a node."""
+
+    _description = "Delete a node"
 
     def get_parser(self, prog_name):
         parser = super(DeleteNode, self).get_parser(prog_name)
@@ -257,7 +261,9 @@ class DeleteNode(command.Command):
 
 
 class ShowNode(command.Command):
-    _description = "Display node details"
+    """Show node details."""
+
+    _description = "Show node details"
 
     def get_parser(self, prog_name):
         parser = super(ShowNode, self).get_parser(prog_name)
@@ -276,7 +282,9 @@ class ShowNode(command.Command):
 
 
 class ListNode(command.Command):
-    _description = "List all composed nodes"
+    """List all nodes."""
+
+    _description = "List all nodes"
 
     def take_action(self, parsed_args):
         self.log.debug("take_action(%s)", parsed_args)
@@ -286,7 +294,9 @@ class ListNode(command.Command):
 
 
 class AttachEndpoint(command.Command):
-    _description = "Attach drive to existing composed node"
+    """Attach drive to existing node."""
+
+    _description = "Attach drive to existing node"
 
     def get_parser(self, prog_name):
         parser = super(AttachEndpoint, self).get_parser(prog_name)
@@ -313,7 +323,9 @@ class AttachEndpoint(command.Command):
 
 
 class DetachEndpoint(command.Command):
-    _description = "Detach drive from a composed node"
+    """Detach drive from existing node."""
+
+    _description = "Detach drive from existing node"
 
     def get_parser(self, prog_name):
         parser = super(DetachEndpoint, self).get_parser(prog_name)

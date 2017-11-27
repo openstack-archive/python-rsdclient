@@ -19,6 +19,8 @@ from rsdclient.common import command
 
 
 class ListStorageServices(command.Command):
+    """List all storage services."""
+
     _description = "List all storage services"
 
     def take_action(self, parsed_args):
@@ -29,7 +31,9 @@ class ListStorageServices(command.Command):
 
 
 class ShowStorageServices(command.Command):
-    _description = "Display storage service details"
+    """Show storage service details"""
+
+    _description = "Show storage service details"
 
     def get_parser(self, prog_name):
         parser = super(ShowStorageServices, self).get_parser(prog_name)
