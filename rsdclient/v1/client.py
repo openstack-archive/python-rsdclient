@@ -37,7 +37,7 @@ class Client(object):
         """
 
         self.client = rsd_lib.RSDLib(base_url, username, password,
-                                     verify=verify)
+                                     verify=verify).factory()
         self.node = node.NodeManager(self.client)
         self.storage_service = \
             storage_service.StorageServiceManager(self.client)
