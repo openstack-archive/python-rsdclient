@@ -32,6 +32,10 @@ class NodeTest(testtools.TestCase):
         mock_node_collection = mock.Mock()
         mock_node_collection.compose_node.return_value = '/redfish/v1/Nodes/1'
         self.client.get_node_collection.return_value = mock_node_collection
+
+        mock_node = mock.Mock()
+        self.client.get_node.return_value = mock_node
+
         result = self.mgr.compose(name='fake_name',
                                   description='fake_description')
         self.mgr.client.get_node_collection.assert_called_once()
@@ -39,6 +43,9 @@ class NodeTest(testtools.TestCase):
             name='fake_name', description='fake_description',
             processor_req=None, memory_req=None, remote_drive_req=None,
             local_drive_req=None, ethernet_interface_req=None)
+        self.mgr.client.get_node.assert_called_once_with(
+            self.mgr._get_node_uri(result))
+        mock_node.assemble_node.assert_called_once()
         self.assertEqual(result, '1')
 
     def test_delete_node(self):

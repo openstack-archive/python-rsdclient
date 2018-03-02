@@ -38,7 +38,14 @@ class NodeManager(base.Manager):
             memory_req=memory_req, remote_drive_req=remote_drive_req,
             local_drive_req=local_drive_req,
             ethernet_interface_req=ethernet_interface_req)
-        return node_uri[len(self.nodes_path) + 1:]
+
+        # Assume most of user will assemble node after composition, so assemble
+        # node automatically here
+        node_id = node_uri[len(self.nodes_path) + 1:]
+        node = self.client.get_node(self._get_node_uri(node_id))
+        node.assemble_node()
+
+        return node_id
 
     def delete(self, node_id):
         self.client.get_node(self._get_node_uri(node_id)).delete_node()
