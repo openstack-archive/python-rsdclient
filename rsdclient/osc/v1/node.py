@@ -343,3 +343,26 @@ class DetachEndpoint(command.Command):
         self.log.debug("take_action(%s)", parsed_args)
         rsd_client = self.app.client_manager.rsd
         rsd_client.node.detach(parsed_args.node, parsed_args.resource)
+
+
+class ResetEndpoint(command.Command):
+    """Reset the power of the node."""
+
+    _description = "Reset the power of the node"
+
+    def get_parser(self, prog_name):
+        parser = super(ResetEndpoint, self).get_parser(prog_name)
+        parser.add_argument(
+            'node',
+            metavar='<node>',
+            help='ID of the node.')
+        parser.add_argument(
+            '--action',
+            metavar='<reset action>',
+            help='Reset action of this node, e.g. "on", "force off".')
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        rsd_client.node.reset(parsed_args.node, parsed_args.action)

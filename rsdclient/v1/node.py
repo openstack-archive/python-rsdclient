@@ -80,3 +80,7 @@ class NodeManager(base.Manager):
     def detach(self, node_id, endpoint):
         node = self.client.get_node(self._get_node_uri(node_id))
         node.detach_endpoint(endpoint)
+
+    def reset(self, node_id, action):
+        node = self.client.get_node(self._get_node_uri(node_id))
+        node.reset_node(action)
