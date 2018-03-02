@@ -24,6 +24,8 @@ class UtilsTest(testtools.TestCase):
     def test_extract_attr(self):
         fake_node = fakes.FakeNode()
         result = utils.extract_attr(fake_node)
+        # Pop out mock.Mock variable 'method_calls'
+        result.pop('method_calls')
         expected = fakes.FAKE_NODE_PYTHON_DICT
         self.assertEqual(result, expected)
 

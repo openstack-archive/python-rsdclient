@@ -65,9 +65,10 @@ class FakeMemorySummary(object):
         self.health = "OK"
 
 
-class FakeNode(object):
+class FakeNode(mock.Mock):
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super(FakeNode, self).__init__(*args, **kwargs)
         self.name = "Test"
         self.description = "Node for testing"
         self.identity = "1"

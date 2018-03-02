@@ -50,9 +50,26 @@ class NodeTest(testtools.TestCase):
         mock_node.delete_node.assert_called_once()
 
     def test_show_node(self):
-        self.client.get_node.return_value = fakes.FakeNode()
+        node = fakes.FakeNode()
+        node.get_allowed_attach_endpoints.return_value = \
+            ('/redfish/v1/Chassis/3-c-1/Drives/3-c-1-d-1',)
+        node.get_allowed_detach_endpoints.return_value = ()
+        node.get_allowed_node_boot_source_values.return_value = ('pxe', 'hdd')
+        node.get_allowed_reset_node_values.return_value = ('on', 'force off')
+        self.client.get_node.return_value = node
+
         result = self.mgr.show('1')
+        # Pop out mock.Mock variable 'method_calls'
+        result.pop('method_calls')
         expected = fakes.FAKE_NODE_PYTHON_DICT
+        expected.update(
+            {
+                "allowed_attach_endpoints":
+                    ['/redfish/v1/Chassis/3-c-1/Drives/3-c-1-d-1'],
+                "allowed_detach_endpoints": [],
+                "allowed_boot_source": ["pxe", "hdd"],
+                "allowed_reset_node_values": ["on", "force off"]
+            })
         self.assertEqual(result, expected)
 
     def test_list_node(self):

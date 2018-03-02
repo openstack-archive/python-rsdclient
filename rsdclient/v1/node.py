@@ -45,7 +45,18 @@ class NodeManager(base.Manager):
 
     def show(self, node_id):
         node = self.client.get_node(self._get_node_uri(node_id))
-        return utils.extract_attr(node)
+        node_info = utils.extract_attr(node)
+
+        node_info['allowed_attach_endpoints'] = \
+            list(node.get_allowed_attach_endpoints())
+        node_info['allowed_detach_endpoints'] = \
+            list(node.get_allowed_detach_endpoints())
+        node_info['allowed_boot_source'] = \
+            list(node.get_allowed_node_boot_source_values())
+        node_info['allowed_reset_node_values'] = \
+            list(node.get_allowed_reset_node_values())
+
+        return node_info
 
     def list(self):
         node_collection = self.client.get_node_collection()
