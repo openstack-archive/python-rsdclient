@@ -124,3 +124,26 @@ class NodeTest(testtools.TestCase):
         self.mgr.reset(node_id, 'fake_reset_value')
         self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
         mock_node.reset_node.assert_called_once_with('fake_reset_value')
+
+    def test_set_boot_source(self):
+        node_id = '1'
+        mock_node = mock.Mock()
+        self.client.get_node.return_value = mock_node
+        self.mgr.set_boot_source(node_id, 'pxe')
+        self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
+        mock_node.set_node_boot_source.assert_called_once_with(
+            'pxe', 'once', None)
+
+        self.client.reset_mock()
+        mock_node.reset_mock()
+        self.mgr.set_boot_source(node_id, 'pxe', 'continuous')
+        self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
+        mock_node.set_node_boot_source.assert_called_once_with(
+            'pxe', 'continuous', None)
+
+        self.client.reset_mock()
+        mock_node.reset_mock()
+        self.mgr.set_boot_source(node_id, 'pxe', mode='uefi')
+        self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
+        mock_node.set_node_boot_source.assert_called_once_with(
+            'pxe', 'once', 'uefi')

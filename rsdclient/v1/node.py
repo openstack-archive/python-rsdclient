@@ -15,6 +15,8 @@
 
 import os
 
+from rsd_lib.resources.v2_1.node import constants as node_cons
+
 from rsdclient.common import base
 from rsdclient.common import utils
 
@@ -84,3 +86,10 @@ class NodeManager(base.Manager):
     def reset(self, node_id, action):
         node = self.client.get_node(self._get_node_uri(node_id))
         node.reset_node(action)
+
+    def set_boot_source(self, node_id, target, enabled=None, mode=None):
+        if not enabled:
+            enabled = node_cons.BOOT_SOURCE_ENABLED_ONCE
+
+        node = self.client.get_node(self._get_node_uri(node_id))
+        node.set_node_boot_source(target, enabled, mode)

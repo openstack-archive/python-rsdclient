@@ -345,13 +345,13 @@ class DetachEndpoint(command.Command):
         rsd_client.node.detach(parsed_args.node, parsed_args.resource)
 
 
-class ResetEndpoint(command.Command):
+class ResetNode(command.Command):
     """Reset the power of the node."""
 
     _description = "Reset the power of the node"
 
     def get_parser(self, prog_name):
-        parser = super(ResetEndpoint, self).get_parser(prog_name)
+        parser = super(ResetNode, self).get_parser(prog_name)
         parser.add_argument(
             'node',
             metavar='<node>',
@@ -366,3 +366,36 @@ class ResetEndpoint(command.Command):
         self.log.debug("take_action(%s)", parsed_args)
         rsd_client = self.app.client_manager.rsd
         rsd_client.node.reset(parsed_args.node, parsed_args.action)
+
+
+class SetBootSource(command.Command):
+    """Set the boot source of the node."""
+
+    _description = "Set the boot source of the node"
+
+    def get_parser(self, prog_name):
+        parser = super(SetBootSource, self).get_parser(prog_name)
+        parser.add_argument(
+            'node',
+            metavar='<node>',
+            help='ID of the node.')
+        parser.add_argument(
+            '--target',
+            metavar='<boot source>',
+            help='Boot source of this node, e.g. "pxe", "hdd".')
+        parser.add_argument(
+            '--enabled',
+            metavar='<frequency>',
+            help='The enabled frequency of this setting, '
+                 'e.g. "once", "continuous", "disabled".')
+        parser.add_argument(
+            '--mode',
+            metavar='<boot mode>',
+            help='Boot mode, e.g. "legacy", "uefi".')
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        rsd_client.node.set_boot_source(parsed_args.node, parsed_args.target,
+                                        parsed_args.enabled, parsed_args.mode)
