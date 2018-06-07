@@ -62,10 +62,10 @@ class StorageServiceManager(base.Manager):
         storage = self.client.get_storage_service(storage_uri)
 
         volume_collection = storage.volumes.get_members()
-        storages = [utils.extract_attr(volume)
-                    for volume in volume_collection]
+        volumes_info = [utils.extract_attr(volume)
+                        for volume in volume_collection]
         volume_info_table = utils.print_dict(
-            storages, ["Identity", "Name", "Description"])
+            volumes_info, ["Identity", "Name", "Description"])
         return volume_info_table
 
     def show_volume(self, volume_uri):
@@ -110,3 +110,13 @@ class StorageServiceManager(base.Manager):
         volume = storage.volumes.get_member(volume_uri)
 
         volume.delete()
+
+    def list_drive(self, storage_uri):
+        storage = self.client.get_storage_service(storage_uri)
+        drive_collection = storage.drives.get_members()
+
+        drives_info = [utils.extract_attr(drive)
+                       for drive in drive_collection]
+        drive_info_table = utils.print_dict(
+            drives_info, ["Identity", "Name", "Description"])
+        return drive_info_table

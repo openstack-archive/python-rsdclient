@@ -227,3 +227,25 @@ class DeleteVolume(command.Command):
         self.log.debug("take_action(%s)", parsed_args)
         rsd_client = self.app.client_manager.rsd
         rsd_client.storage_service.delete_volume(parsed_args.volume)
+
+
+class ListDrives(command.Command):
+    """List all drives of one storage service."""
+
+    _description = "List all drives of one storage service"
+
+    def get_parser(self, prog_name):
+        parser = super(ListDrives, self).get_parser(prog_name)
+        parser.add_argument(
+            'storageservice',
+            metavar='<storage service>',
+            help='ID of the storage service.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        drive_list = rsd_client.storage_service.list_drive(
+            parsed_args.storageservice)
+        print(drive_list)
