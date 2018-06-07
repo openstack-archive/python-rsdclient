@@ -36,7 +36,7 @@ def extract_attr(redfish_obj):
     result = {}
     try:
         for key, value in vars(redfish_obj).items():
-            if key == '_path':
+            if key == '_path' and isinstance(value, six.string_types):
                 result['path'] = extract_attr(value)
                 continue
             # Skip all private attributes
