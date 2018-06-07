@@ -13,8 +13,6 @@
 #   under the License.
 #
 
-import os
-
 from rsd_lib.resources.v2_1.node import constants as node_cons
 
 from rsdclient.common import base
@@ -29,9 +27,6 @@ class NodeManager(base.Manager):
         super(NodeManager, self).__init__(*args, **kwargs)
         self.nodes_path = self.client._nodes_path
 
-    def _get_node_uri(self, node_id):
-        return os.path.join(self.nodes_path, node_id)
-
     def compose(self, name=None, description=None, processor_req=None,
                 memory_req=None, remote_drive_req=None, local_drive_req=None,
                 ethernet_interface_req=None):
@@ -43,17 +38,16 @@ class NodeManager(base.Manager):
 
         # Assume most of user will assemble node after composition, so assemble
         # node automatically here
-        node_id = node_uri[len(self.nodes_path) + 1:]
-        node = self.client.get_node(self._get_node_uri(node_id))
+        node = self.client.get_node(node_uri)
         node.assemble_node()
 
-        return node_id
+        return node_uri
 
-    def delete(self, node_id):
-        self.client.get_node(self._get_node_uri(node_id)).delete_node()
+    def delete(self, node_uri):
+        self.client.get_node(node_uri).delete_node()
 
-    def show(self, node_id):
-        node = self.client.get_node(self._get_node_uri(node_id))
+    def show(self, node_uri):
+        node = self.client.get_node(node_uri)
         node_info = utils.extract_attr(node)
 
         node_info['allowed_attach_endpoints'] = \
@@ -75,21 +69,21 @@ class NodeManager(base.Manager):
             nodes, ["Identity", "Name", "UUID", "Description"])
         return node_info_table
 
-    def attach(self, node_id, endpoint=None, capacity=None):
-        node = self.client.get_node(self._get_node_uri(node_id))
+    def attach(self, node_uri, endpoint=None, capacity=None):
+        node = self.client.get_node(node_uri)
         node.attach_endpoint(endpoint, capacity)
 
-    def detach(self, node_id, endpoint):
-        node = self.client.get_node(self._get_node_uri(node_id))
+    def detach(self, node_uri, endpoint):
+        node = self.client.get_node(node_uri)
         node.detach_endpoint(endpoint)
 
-    def reset(self, node_id, action):
-        node = self.client.get_node(self._get_node_uri(node_id))
+    def reset(self, node_uri, action):
+        node = self.client.get_node(node_uri)
         node.reset_node(action)
 
-    def set_boot_source(self, node_id, target, enabled=None, mode=None):
+    def set_boot_source(self, node_uri, target, enabled=None, mode=None):
         if not enabled:
             enabled = node_cons.BOOT_SOURCE_ENABLED_ONCE
 
-        node = self.client.get_node(self._get_node_uri(node_id))
+        node = self.client.get_node(node_uri)
         node.set_node_boot_source(target, enabled, mode)

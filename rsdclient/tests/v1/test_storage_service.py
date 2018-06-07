@@ -38,11 +38,16 @@ class StorageServiceTest(testtools.TestCase):
             fakes.FakeStorageSerice()
 
         expected = (
-            '+----------+-----------------+-----------------------------+\n'
-            '| Identity |       Name      |         Description         |\n'
-            '+----------+-----------------+-----------------------------+\n'
-            '|    1     | Storage Service | Storage Service for Testing |\n'
-            '+----------+-----------------+-----------------------------+')
+            '+------------------------------------+-----------------+---------'
+            '--------------------+\n'
+            '|              Identity              |       Name      |         '
+            'Description         |\n'
+            '+------------------------------------+-----------------+---------'
+            '--------------------+\n'
+            '| /redfish/v1/StorageServices/1-sv-1 | Storage Service | Storage '
+            'Service for Testing |\n'
+            '+------------------------------------+-----------------+---------'
+            '--------------------+')
 
         result = self.mgr.list()
         self.mgr.client.get_storage_service_collection.assert_called_once()
@@ -53,6 +58,8 @@ class StorageServiceTest(testtools.TestCase):
     def test_show_storage(self):
         self.client.get_storage_service.return_value = \
             fakes.FakeStorageSerice()
-        result = self.mgr.show('1')
+        result = self.mgr.show('/redfish/v1/StorageServices/1-sv-1')
         expected = fakes.FAKE_STORAGE_PYTHON_DICT
         self.assertEqual(result, expected)
+        self.mgr.client.get_storage_service.assert_called_once_with(
+            '/redfish/v1/StorageServices/1-sv-1')

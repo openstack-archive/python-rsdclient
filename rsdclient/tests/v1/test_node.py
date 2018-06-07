@@ -43,16 +43,15 @@ class NodeTest(testtools.TestCase):
             name='fake_name', description='fake_description',
             processor_req=None, memory_req=None, remote_drive_req=None,
             local_drive_req=None, ethernet_interface_req=None)
-        self.mgr.client.get_node.assert_called_once_with(
-            self.mgr._get_node_uri(result))
+        self.mgr.client.get_node.assert_called_once_with(result)
         mock_node.assemble_node.assert_called_once()
-        self.assertEqual(result, '1')
+        self.assertEqual('/redfish/v1/Nodes/1', result)
 
     def test_delete_node(self):
-        node_id = '1'
+        node_uri = '/redfish/v1/Nodes/1'
         mock_node = mock.Mock()
         self.client.get_node.return_value = mock_node
-        self.mgr.delete(node_id)
+        self.mgr.delete(node_uri)
         self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
         mock_node.delete_node.assert_called_once()
 
@@ -65,7 +64,7 @@ class NodeTest(testtools.TestCase):
         node.get_allowed_reset_node_values.return_value = ('on', 'force off')
         self.client.get_node.return_value = node
 
-        result = self.mgr.show('1')
+        result = self.mgr.show('/redfish/v1/Nodes/1')
         # Pop out mock.Mock variable 'method_calls'
         result.pop('method_calls')
         expected = fakes.FAKE_NODE_PYTHON_DICT
@@ -78,6 +77,7 @@ class NodeTest(testtools.TestCase):
                 "allowed_reset_node_values": ["on", "force off"]
             })
         self.assertEqual(result, expected)
+        self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
 
     def test_list_node(self):
         mock_node_collection = mock.Mock()
@@ -85,16 +85,16 @@ class NodeTest(testtools.TestCase):
         self.mgr.client.get_node_collection.return_value = mock_node_collection
         self.mgr.client.get_node.return_value = fakes.FakeNode()
 
-        expected = '+----------+------+--------------------------------------'\
-                   '+------------------+\n'\
-                   '| Identity | Name |                 UUID                 '\
-                   '|   Description    |\n'\
-                   '+----------+------+--------------------------------------'\
-                   '+------------------+\n'\
-                   '|    1     | Test | fd011520-86a2-11e7-b4d4-5d323196a3e4 '\
-                   '| Node for testing |\n'\
-                   '+----------+------+--------------------------------------'\
-                   '+------------------+'
+        expected = '+---------------------+------+---------------------------'\
+                   '-----------+------------------+\n'\
+                   '|       Identity      | Name |                 UUID      '\
+                   '           |   Description    |\n'\
+                   '+---------------------+------+---------------------------'\
+                   '-----------+------------------+\n'\
+                   '| /redfish/v1/Nodes/1 | Test | fd011520-86a2-11e7-b4d4-5d'\
+                   '323196a3e4 | Node for testing |\n'\
+                   '+---------------------+------+---------------------------'\
+                   '-----------+------------------+'
 
         result = self.mgr.list()
         self.mgr.client.get_node_collection.assert_called_once()
@@ -102,48 +102,48 @@ class NodeTest(testtools.TestCase):
         self.assertEqual(str(result), expected)
 
     def test_attach(self):
-        node_id = '1'
+        node_uri = '/redfish/v1/Nodes/1'
         mock_node = mock.Mock()
         self.client.get_node.return_value = mock_node
-        self.mgr.attach(node_id, 'fake uri', 10)
+        self.mgr.attach(node_uri, 'fake uri', 10)
         self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
         mock_node.attach_endpoint.assert_called_once_with('fake uri', 10)
 
     def test_detach(self):
-        node_id = '1'
+        node_uri = '/redfish/v1/Nodes/1'
         mock_node = mock.Mock()
         self.client.get_node.return_value = mock_node
-        self.mgr.detach(node_id, 'fake uri')
+        self.mgr.detach(node_uri, 'fake uri')
         self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
         mock_node.detach_endpoint.assert_called_once_with('fake uri')
 
     def test_reset(self):
-        node_id = '1'
+        node_uri = '/redfish/v1/Nodes/1'
         mock_node = mock.Mock()
         self.client.get_node.return_value = mock_node
-        self.mgr.reset(node_id, 'fake_reset_value')
+        self.mgr.reset(node_uri, 'fake_reset_value')
         self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
         mock_node.reset_node.assert_called_once_with('fake_reset_value')
 
     def test_set_boot_source(self):
-        node_id = '1'
+        node_uri = '/redfish/v1/Nodes/1'
         mock_node = mock.Mock()
         self.client.get_node.return_value = mock_node
-        self.mgr.set_boot_source(node_id, 'pxe')
+        self.mgr.set_boot_source(node_uri, 'pxe')
         self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
         mock_node.set_node_boot_source.assert_called_once_with(
             'pxe', 'once', None)
 
         self.client.reset_mock()
         mock_node.reset_mock()
-        self.mgr.set_boot_source(node_id, 'pxe', 'continuous')
+        self.mgr.set_boot_source(node_uri, 'pxe', 'continuous')
         self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
         mock_node.set_node_boot_source.assert_called_once_with(
             'pxe', 'continuous', None)
 
         self.client.reset_mock()
         mock_node.reset_mock()
-        self.mgr.set_boot_source(node_id, 'pxe', mode='uefi')
+        self.mgr.set_boot_source(node_uri, 'pxe', mode='uefi')
         self.mgr.client.get_node.assert_called_once_with('/redfish/v1/Nodes/1')
         mock_node.set_node_boot_source.assert_called_once_with(
             'pxe', 'once', 'uefi')
