@@ -24,6 +24,12 @@ class FabricManager(base.Manager):
         super(FabricManager, self).__init__(*args, **kwargs)
         self.fabrics_path = self.client._fabrics_path
 
+    def _extract_fabric_uri(self, uri):
+        if not uri.startswith(self.fabrics_path):
+            return None
+
+        return uri[:uri.find('/', len(self.fabrics_path) + 1)]
+
     def list(self):
         fabric_collection = self.client.get_fabric_collection()
         fabrics = [utils.extract_attr(self.client.get_fabric(fabric_uri))
@@ -55,3 +61,10 @@ class FabricManager(base.Manager):
         endpoint_info_table = utils.print_dict(
             endpoints, ["Identity", "Name", "Description"])
         return endpoint_info_table
+
+    def show_endpoint(self, endpoint_id):
+        fabric = self.client.get_fabric(
+            self._extract_fabric_uri(endpoint_id))
+        endpoint = fabric.endpoints.get_member(endpoint_id)
+
+        return utils.extract_attr(endpoint)

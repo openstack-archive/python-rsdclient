@@ -70,3 +70,26 @@ class ListEndpoint(command.Command):
         rsd_client = self.app.client_manager.rsd
         endpoint_list = rsd_client.fabric.list_endpoint(parsed_args.fabric)
         print(endpoint_list)
+
+
+class ShowEndpoint(command.Command):
+    """Show endpoint details"""
+
+    _description = "Show endpoint details"
+
+    def get_parser(self, prog_name):
+        parser = super(ShowEndpoint, self).get_parser(prog_name)
+
+        parser.add_argument(
+            'endpoint',
+            metavar='<endpoint>',
+            help='ID of the endpoint.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        endpoint_detail = rsd_client.fabric.show_endpoint(
+            parsed_args.endpoint)
+        print("{0}".format(json.dumps(endpoint_detail, indent=2)))

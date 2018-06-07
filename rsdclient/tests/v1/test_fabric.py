@@ -28,6 +28,13 @@ class FabricTest(testtools.TestCase):
         self.client._fabrics_path = '/redfish/v1/Fabrics'
         self.mgr = fabric.FabricManager(self.client)
 
+    def test__extract_fabric_uri(self):
+        self.assertIsNone(self.mgr._extract_fabric_uri('invalid uri'))
+        self.assertEqual(
+            '/redfish/v1/Fabrics/1-ff-1',
+            self.mgr._extract_fabric_uri(
+                '/redfish/v1/Fabrics/1-ff-1/Endpoints/1-ff-1-e-2'))
+
     def test_list_fabric(self):
         mock_fabric_collection = mock.Mock()
         mock_fabric_collection.members_identities = \
@@ -71,3 +78,14 @@ class FabricTest(testtools.TestCase):
         self.mgr.client.get_fabric.assert_called_once_with(
             '/redfish/v1/Fabrics/1-ff-1')
         mock_fabric.endpoints.get_members.assert_called_once()
+
+    def test_show_volume(self):
+        mock_fabric = mock.Mock()
+        self.client.get_fabric.return_value = mock_fabric
+
+        self.mgr.show_endpoint(
+            '/redfish/v1/Fabrics/1-ff-1/Endpoints/1-ff-1-e-2')
+        self.mgr.client.get_fabric.assert_called_once_with(
+            '/redfish/v1/Fabrics/1-ff-1')
+        mock_fabric.endpoints.get_member.assert_called_once_with(
+            '/redfish/v1/Fabrics/1-ff-1/Endpoints/1-ff-1-e-2')
