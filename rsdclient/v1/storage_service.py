@@ -120,3 +120,16 @@ class StorageServiceManager(base.Manager):
         drive_info_table = utils.print_dict(
             drives_info, ["Identity", "Name", "Description"])
         return drive_info_table
+
+    def show_drive(self, drive_id):
+        storage_service_collection = \
+            self.client.get_storage_service_collection()
+
+        for storage_inst in storage_service_collection.get_members():
+            if drive_id in storage_inst.drives.members_identities:
+                storage = storage_inst
+                break
+
+        drive = storage.drives.get_member(drive_id)
+
+        return utils.extract_attr(drive)

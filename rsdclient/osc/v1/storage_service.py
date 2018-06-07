@@ -249,3 +249,25 @@ class ListDrives(command.Command):
         drive_list = rsd_client.storage_service.list_drive(
             parsed_args.storageservice)
         print(drive_list)
+
+
+class ShowDrive(command.Command):
+    """Show drive details"""
+
+    _description = "Show drive details"
+
+    def get_parser(self, prog_name):
+        parser = super(ShowDrive, self).get_parser(prog_name)
+
+        parser.add_argument(
+            'drive',
+            metavar='<drive>',
+            help='ID of the drive.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        drive_detail = rsd_client.storage_service.show_drive(parsed_args.drive)
+        print("{0}".format(json.dumps(drive_detail, indent=2)))
