@@ -156,3 +156,53 @@ class InitializeVolume(command.Command):
         rsd_client = self.app.client_manager.rsd
         rsd_client.storage_service.initialize_volume(
             parsed_args.volume, parsed_args.init_type)
+
+
+class CreateVolume(command.Command):
+    """Create a new volume"""
+
+    _description = "Create a new volume"
+
+    def get_parser(self, prog_name):
+        parser = super(CreateVolume, self).get_parser(prog_name)
+        parser.add_argument(
+            'storageservice',
+            metavar='<storage service>',
+            help='ID of the storage service.')
+
+        parser.add_argument(
+            '--capacity',
+            type=int,
+            metavar='<volume capacity>',
+            help='Capacity of the volume.')
+
+        parser.add_argument(
+            '--access_capabilities',
+            metavar='<storage service>',
+            help='List of volume access capabilities, e.g. [\'Read\', '
+                 '\'Write\', \'WriteOnce\', \'Append\', \'Streaming\']')
+
+        parser.add_argument(
+            '--capacity_sources',
+            metavar='<storage service>',
+            help='JSON for volume providing source.')
+
+        parser.add_argument(
+            '--replica_infos',
+            metavar='<storage service>',
+            help='JSON for volume replica infos.')
+
+        parser.add_argument(
+            '--bootable',
+            metavar='<storage service>',
+            help='Determines if the volume should be bootable.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        rsd_client.storage_service.create_volume(
+            parsed_args.storageservice, parsed_args.capacity,
+            parsed_args.access_capabilities, parsed_args.capacity_sources,
+            parsed_args.replica_infos, parsed_args.bootable)

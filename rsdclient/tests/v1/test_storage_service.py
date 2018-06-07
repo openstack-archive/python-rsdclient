@@ -145,3 +145,16 @@ class StorageServiceTest(testtools.TestCase):
         mock_sorage.volumes.get_member.assert_called_once_with(
             '/redfish/v1/StorageServices/1-sv-1/Volumes/1-sv-1-vl-1')
         mock_volume.initialize.assert_called_once_with('Fast')
+
+    def test_create_volume(self):
+        mock_sorage = mock.Mock()
+        self.client.get_storage_service.return_value = mock_sorage
+
+        self.mgr.create_volume(
+            '/redfish/v1/StorageServices/1-sv-1', capacity=1024,
+            access_capabilities=['Read'], capacity_sources=[],
+            replica_infos=[], bootable=True)
+        self.mgr.client.get_storage_service.assert_called_once_with(
+            '/redfish/v1/StorageServices/1-sv-1')
+        mock_sorage.volumes.create_volume.assert_called_once_with(
+            1024, ['Read'], [], [], True)

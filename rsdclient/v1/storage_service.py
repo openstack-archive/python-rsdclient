@@ -93,3 +93,13 @@ class StorageServiceManager(base.Manager):
         volume = storage.volumes.get_member(volume_uri)
 
         volume.initialize(init_type)
+
+    def create_volume(self, storage_uri, capacity, access_capabilities=None,
+                      capacity_sources=None, replica_infos=None,
+                      bootable=None):
+        storage = self.client.get_storage_service(storage_uri)
+        volume_col = storage.volumes
+
+        volume_col.create_volume(capacity, access_capabilities,
+                                 capacity_sources, replica_infos,
+                                 bootable)
