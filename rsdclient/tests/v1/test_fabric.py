@@ -61,3 +61,13 @@ class FabricTest(testtools.TestCase):
         self.mgr.client.get_fabric.assert_called_once_with(
             '/redfish/v1/Fabrics/PCIe')
         self.assertEqual(result, expected)
+
+    def test_list_endpoint(self):
+        mock_fabric = mock.Mock()
+        self.client.get_fabric.return_value = mock_fabric
+        mock_fabric.endpoints.get_members.return_value = ()
+
+        self.mgr.list_endpoint('/redfish/v1/Fabrics/1-ff-1')
+        self.mgr.client.get_fabric.assert_called_once_with(
+            '/redfish/v1/Fabrics/1-ff-1')
+        mock_fabric.endpoints.get_members.assert_called_once()

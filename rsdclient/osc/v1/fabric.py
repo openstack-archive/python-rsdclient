@@ -49,3 +49,24 @@ class ShowFabric(command.Command):
         rsd_client = self.app.client_manager.rsd
         fabric_detail = rsd_client.fabric.show(parsed_args.fabric)
         print("{0}".format(json.dumps(fabric_detail, indent=2)))
+
+
+class ListEndpoint(command.Command):
+    """List all endpoints of one fabric."""
+
+    _description = "List all endpoints of one fabric"
+
+    def get_parser(self, prog_name):
+        parser = super(ListEndpoint, self).get_parser(prog_name)
+        parser.add_argument(
+            'fabric',
+            metavar='<fabric>',
+            help='ID of the fabric.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        endpoint_list = rsd_client.fabric.list_endpoint(parsed_args.fabric)
+        print(endpoint_list)

@@ -45,3 +45,13 @@ class FabricManager(base.Manager):
             for item in fabric.zones.get_members()]
 
         return fabric_dict
+
+    def list_endpoint(self, fabric_id):
+        fabric = self.client.get_fabric(fabric_id)
+
+        endpoint_collection = fabric.endpoints.get_members()
+        endpoints = [utils.extract_attr(endpoint)
+                     for endpoint in endpoint_collection]
+        endpoint_info_table = utils.print_dict(
+            endpoints, ["Identity", "Name", "Description"])
+        return endpoint_info_table
