@@ -129,3 +129,30 @@ class UpdateVolume(command.Command):
         rsd_client.storage_service.update_volume(
             parsed_args.volume, parsed_args.bootable,
             parsed_args.erased)
+
+
+class InitializeVolume(command.Command):
+    """Initialize (erase) volume"""
+
+    _description = "Initialize (erase) volume"
+
+    def get_parser(self, prog_name):
+        parser = super(InitializeVolume, self).get_parser(prog_name)
+
+        parser.add_argument(
+            'volume',
+            metavar='<volume>',
+            help='ID of the volume.')
+
+        parser.add_argument(
+            '--init_type',
+            metavar='<init type>',
+            help='Type of volume initialize (erase) process.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        rsd_client.storage_service.initialize_volume(
+            parsed_args.volume, parsed_args.init_type)
