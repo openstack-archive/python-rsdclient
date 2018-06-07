@@ -24,6 +24,12 @@ class StorageServiceManager(base.Manager):
         super(StorageServiceManager, self).__init__(*args, **kwargs)
         self.storage_service_path = self.client._storage_service_path
 
+    def _extract_storage_service_uri(self, uri):
+        if not uri.startswith(self.storage_service_path):
+            return None
+
+        return uri[:uri.find('/', len(self.storage_service_path) + 1)]
+
     def list(self):
         storage_service_collection = \
             self.client.get_storage_service_collection()
@@ -61,3 +67,10 @@ class StorageServiceManager(base.Manager):
         volume_info_table = utils.print_dict(
             storages, ["Identity", "Name", "Description"])
         return volume_info_table
+
+    def show_volume(self, volume_uri):
+        storage = self.client.get_storage_service(
+            self._extract_storage_service_uri(volume_uri))
+        volume = storage.volumes.get_member(volume_uri)
+
+        return utils.extract_attr(volume)

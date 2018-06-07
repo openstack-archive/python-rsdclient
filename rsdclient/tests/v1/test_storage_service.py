@@ -25,8 +25,15 @@ class StorageServiceTest(testtools.TestCase):
     def setUp(self):
         super(StorageServiceTest, self).setUp()
         self.client = mock.Mock()
-        self.client._storage_service_path = '/redfish/v1/Services'
+        self.client._storage_service_path = '/redfish/v1/StorageServices'
         self.mgr = storage_service.StorageServiceManager(self.client)
+
+    def test__extract_storage_service_uri(self):
+        self.assertIsNone(self.mgr._extract_storage_service_uri('invalid uri'))
+        self.assertEqual(
+            '/redfish/v1/StorageServices/1-sv-1',
+            self.mgr._extract_storage_service_uri(
+                '/redfish/v1/StorageServices/1-sv-1/Volumes/1-sv-1-vl-1'))
 
     def test_list_storage(self):
         mock_storage_collection = mock.Mock()
@@ -73,3 +80,14 @@ class StorageServiceTest(testtools.TestCase):
         self.mgr.client.get_storage_service.assert_called_once_with(
             '/redfish/v1/StorageServices/1-sv-1')
         mock_sorage.volumes.get_members.assert_called_once()
+
+    def test_show_volume(self):
+        mock_sorage = mock.Mock()
+        self.client.get_storage_service.return_value = mock_sorage
+
+        self.mgr.show_volume(
+            '/redfish/v1/StorageServices/1-sv-1/Volumes/1-sv-1-vl-1')
+        self.mgr.client.get_storage_service.assert_called_once_with(
+            '/redfish/v1/StorageServices/1-sv-1')
+        mock_sorage.volumes.get_member.assert_called_once_with(
+            '/redfish/v1/StorageServices/1-sv-1/Volumes/1-sv-1-vl-1')
