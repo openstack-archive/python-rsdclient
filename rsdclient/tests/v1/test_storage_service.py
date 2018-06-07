@@ -206,3 +206,14 @@ class StorageServiceTest(testtools.TestCase):
         self.mgr.client.get_storage_service.assert_called_once_with(
             '/redfish/v1/StorageServices/1-sv-1')
         mock_storage.storage_pools.get_members.assert_called_once()
+
+    def test_show_storage_pool(self):
+        mock_storage = mock.Mock()
+        self.client.get_storage_service.return_value = mock_storage
+
+        self.mgr.show_storage_pool(
+            '/redfish/v1/StorageServices/1-sv-1/StoragePools/1-sv-1-sp-1')
+        self.mgr.client.get_storage_service.assert_called_once_with(
+            '/redfish/v1/StorageServices/1-sv-1')
+        mock_storage.storage_pools.get_member.assert_called_once_with(
+            '/redfish/v1/StorageServices/1-sv-1/StoragePools/1-sv-1-sp-1')

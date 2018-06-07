@@ -143,3 +143,10 @@ class StorageServiceManager(base.Manager):
         storage_pool_info_table = utils.print_dict(
             storages, ["Identity", "Name", "Description"])
         return storage_pool_info_table
+
+    def show_storage_pool(self, storage_pool_id):
+        storage = self.client.get_storage_service(
+            self._extract_storage_service_uri(storage_pool_id))
+        storage_pool = storage.storage_pools.get_member(storage_pool_id)
+
+        return utils.extract_attr(storage_pool)

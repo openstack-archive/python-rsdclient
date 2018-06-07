@@ -293,3 +293,26 @@ class ListStoragePools(command.Command):
         storage_pool_list = rsd_client.storage_service.list_storage_pool(
             parsed_args.storageservice)
         print(storage_pool_list)
+
+
+class ShowStoragePool(command.Command):
+    """Show storage pool details"""
+
+    _description = "Show storage pool details"
+
+    def get_parser(self, prog_name):
+        parser = super(ShowStoragePool, self).get_parser(prog_name)
+
+        parser.add_argument(
+            'storage_pool',
+            metavar='<storage pool>',
+            help='ID of the storage pool.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        storage_pool_detail = rsd_client.storage_service.show_storage_pool(
+            parsed_args.storage_pool)
+        print("{0}".format(json.dumps(storage_pool_detail, indent=2)))
