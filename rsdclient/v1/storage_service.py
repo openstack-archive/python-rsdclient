@@ -74,3 +74,15 @@ class StorageServiceManager(base.Manager):
         volume = storage.volumes.get_member(volume_uri)
 
         return utils.extract_attr(volume)
+
+    def update_volume(self, volume_uri, bootable=None, erased=None):
+        storage = self.client.get_storage_service(
+            self._extract_storage_service_uri(volume_uri))
+        volume = storage.volumes.get_member(volume_uri)
+
+        if bootable is not None:
+            bootable = bool(bootable)
+        if erased is not None:
+            erased = bool(erased)
+
+        volume.update(bootable, erased)

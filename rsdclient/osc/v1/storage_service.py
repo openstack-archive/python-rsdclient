@@ -96,3 +96,36 @@ class ShowVolume(command.Command):
         volume_detail = rsd_client.storage_service.show_volume(
             parsed_args.volume)
         print("{0}".format(json.dumps(volume_detail, indent=2)))
+
+
+class UpdateVolume(command.Command):
+    """Update the volume properties"""
+
+    _description = "Update the volume properties"
+
+    def get_parser(self, prog_name):
+        parser = super(UpdateVolume, self).get_parser(prog_name)
+
+        parser.add_argument(
+            'volume',
+            metavar='<volume>',
+            help='ID of the volume.')
+
+        parser.add_argument(
+            '--bootable',
+            metavar='<bootable>',
+            help='bootable ability of the volume.')
+
+        parser.add_argument(
+            '--erased',
+            metavar='<erased config>',
+            help='if the drive was erased.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        rsd_client.storage_service.update_volume(
+            parsed_args.volume, parsed_args.bootable,
+            parsed_args.erased)
