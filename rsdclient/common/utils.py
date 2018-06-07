@@ -36,6 +36,9 @@ def extract_attr(redfish_obj):
     result = {}
     try:
         for key, value in vars(redfish_obj).items():
+            if key == '_path':
+                result['path'] = extract_attr(value)
+                continue
             # Skip all private attributes
             if key.startswith('_'):
                 continue
@@ -50,7 +53,14 @@ def print_dict(obj_list, field_names):
     pt = prettytable.PrettyTable(field_names=field_names)
 
     for element in obj_list:
-        pt.add_row([element.get(i.lower(), None) for i in field_names])
+        row = []
+        for i in field_names:
+            if i == "Identity":
+                # Use resource uri path as its identity
+                row.append(element.get('path', None))
+            else:
+                row.append(element.get(i.lower(), None))
+        pt.add_row(row)
 
     return pt
 

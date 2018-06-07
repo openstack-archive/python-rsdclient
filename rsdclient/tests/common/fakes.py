@@ -17,6 +17,7 @@ import mock
 
 
 FAKE_NODE_PYTHON_DICT = {
+    "path": "/redfish/v1/Nodes/1",
     "description": "Node for testing",
     "processor_summary": {
         "count": 1,
@@ -69,6 +70,7 @@ class FakeNode(mock.Mock):
 
     def __init__(self, *args, **kwargs):
         super(FakeNode, self).__init__(*args, **kwargs)
+        self._path = "/redfish/v1/Nodes/1"
         self.name = "Test"
         self.description = "Node for testing"
         self.identity = "1"
@@ -80,6 +82,7 @@ class FakeNode(mock.Mock):
         self.uuid = "fd011520-86a2-11e7-b4d4-5d323196a3e4"
 
 FAKE_STORAGE_PYTHON_DICT = {
+    'path': '/redfish/v1/StorageServices/1-sv-1',
     'description': 'Storage Service for Testing',
     'identity': '1',
     'name': 'Storage Service',
@@ -181,6 +184,7 @@ class FakeLogicalDrive(object):
 class FakeStorageSerice(object):
 
     def __init__(self):
+        self._path = '/redfish/v1/StorageServices/1-sv-1'
         self.description = 'Storage Service for Testing'
         self.identity = '1'
         self.name = 'Storage Service'
@@ -194,6 +198,7 @@ class FakeStorageSerice(object):
 
 
 FAKE_FABRIC_PYTHON_DICT = {
+    'path': '/redfish/v1/Fabrics/1-ff-1',
     'description': 'PCIe Fabric',
     'fabric_type': 'PCIe',
     'identity': 'PCIe',
@@ -277,6 +282,7 @@ class FakeZone(object):
 class FakeFabric(object):
 
     def __init__(self):
+        self._path = '/redfish/v1/Fabrics/1-ff-1'
         self.description = 'PCIe Fabric'
         self.fabric_type = 'PCIe'
         self.identity = 'PCIe'

@@ -13,8 +13,6 @@
 #   under the License.
 #
 
-import os
-
 from rsdclient.common import base
 from rsdclient.common import utils
 
@@ -25,9 +23,6 @@ class StorageServiceManager(base.Manager):
     def __init__(self, *args, **kwargs):
         super(StorageServiceManager, self).__init__(*args, **kwargs)
         self.storage_service_path = self.client._storage_service_path
-
-    def _get_storage_service_uri(self, storage_service_id):
-        return os.path.join(self.storage_service_path, storage_service_id)
 
     def list(self):
         storage_service_collection = \
@@ -40,9 +35,8 @@ class StorageServiceManager(base.Manager):
             storages, ["Identity", "Name", "Description"])
         return storage_info_table
 
-    def show(self, storage_id):
-        storage = self.client.get_storage_service(
-            self._get_storage_service_uri(storage_id))
+    def show(self, storage_uri):
+        storage = self.client.get_storage_service(storage_uri)
         storage_dict = utils.extract_attr(storage)
 
         # Append sub-items attributions

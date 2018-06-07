@@ -37,11 +37,16 @@ class FabricTest(testtools.TestCase):
         self.mgr.client.get_fabric.return_value = fakes.FakeFabric()
 
         expected = (
-            '+----------+-------------+-------------+-------------+\n'
-            '| Identity |     Name    | Fabric_Type | Description |\n'
-            '+----------+-------------+-------------+-------------+\n'
-            '|   PCIe   | PCIe Fabric |     PCIe    | PCIe Fabric |\n'
-            '+----------+-------------+-------------+-------------+')
+            '+----------------------------+-------------+-------------+-------'
+            '------+\n'
+            '|          Identity          |     Name    | Fabric_Type | '
+            'Description |\n'
+            '+----------------------------+-------------+-------------+-------'
+            '------+\n'
+            '| /redfish/v1/Fabrics/1-ff-1 | PCIe Fabric |     PCIe    | PCIe '
+            'Fabric |\n'
+            '+----------------------------+-------------+-------------+-------'
+            '------+')
 
         result = self.mgr.list()
         self.mgr.client.get_fabric_collection.assert_called_once()
@@ -51,7 +56,7 @@ class FabricTest(testtools.TestCase):
 
     def test_show_fabric(self):
         self.client.get_fabric.return_value = fakes.FakeFabric()
-        result = self.mgr.show('PCIe')
+        result = self.mgr.show('/redfish/v1/Fabrics/PCIe')
         expected = fakes.FAKE_FABRIC_PYTHON_DICT
         self.mgr.client.get_fabric.assert_called_once_with(
             '/redfish/v1/Fabrics/PCIe')
