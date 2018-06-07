@@ -133,3 +133,13 @@ class StorageServiceManager(base.Manager):
         drive = storage.drives.get_member(drive_id)
 
         return utils.extract_attr(drive)
+
+    def list_storage_pool(self, storage_uri):
+        storage = self.client.get_storage_service(storage_uri)
+
+        storage_pool_collection = storage.storage_pools.get_members()
+        storages = [utils.extract_attr(storage_pool)
+                    for storage_pool in storage_pool_collection]
+        storage_pool_info_table = utils.print_dict(
+            storages, ["Identity", "Name", "Description"])
+        return storage_pool_info_table

@@ -271,3 +271,25 @@ class ShowDrive(command.Command):
         rsd_client = self.app.client_manager.rsd
         drive_detail = rsd_client.storage_service.show_drive(parsed_args.drive)
         print("{0}".format(json.dumps(drive_detail, indent=2)))
+
+
+class ListStoragePools(command.Command):
+    """List all storage pools of one storage service."""
+
+    _description = "List all storage pools of one storage service"
+
+    def get_parser(self, prog_name):
+        parser = super(ListStoragePools, self).get_parser(prog_name)
+        parser.add_argument(
+            'storageservice',
+            metavar='<storage service>',
+            help='ID of the storage service.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        storage_pool_list = rsd_client.storage_service.list_storage_pool(
+            parsed_args.storageservice)
+        print(storage_pool_list)
