@@ -51,3 +51,13 @@ class StorageServiceManager(base.Manager):
             for item in storage.logical_drives.get_members()]
 
         return storage_dict
+
+    def list_volume(self, storage_uri):
+        storage = self.client.get_storage_service(storage_uri)
+
+        volume_collection = storage.volumes.get_members()
+        storages = [utils.extract_attr(volume)
+                    for volume in volume_collection]
+        volume_info_table = utils.print_dict(
+            storages, ["Identity", "Name", "Description"])
+        return volume_info_table

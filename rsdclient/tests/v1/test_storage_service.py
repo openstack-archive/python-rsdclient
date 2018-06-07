@@ -63,3 +63,14 @@ class StorageServiceTest(testtools.TestCase):
         self.assertEqual(result, expected)
         self.mgr.client.get_storage_service.assert_called_once_with(
             '/redfish/v1/StorageServices/1-sv-1')
+
+    def test_list_volume(self):
+        mock_sorage = mock.Mock()
+        self.client.get_storage_service.return_value = mock_sorage
+        mock_sorage.volumes.get_members.return_value = ()
+
+        self.mgr.list_volume('/redfish/v1/StorageServices/1-sv-1')
+        self.mgr.client.get_storage_service.assert_called_once_with(
+            '/redfish/v1/StorageServices/1-sv-1')
+        mock_sorage.volumes.get_members.assert_called_once()
+

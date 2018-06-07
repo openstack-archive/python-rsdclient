@@ -50,3 +50,24 @@ class ShowStorageServices(command.Command):
         storage_detail = rsd_client.storage_service.show(
             parsed_args.storageservice)
         print("{0}".format(json.dumps(storage_detail, indent=2)))
+
+
+class ListVolumes(command.Command):
+    """List all volumes of one storage service."""
+
+    _description = "List all volumes of one storage service"
+
+    def get_parser(self, prog_name):
+        parser = super(ListVolumes, self).get_parser(prog_name)
+        parser.add_argument(
+            'storageservice',
+            metavar='<storage service>',
+            help='ID of the storage service.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        volume_list = rsd_client.storage_service.list_volume(parsed_args.storageservice)
+        print(volume_list)
