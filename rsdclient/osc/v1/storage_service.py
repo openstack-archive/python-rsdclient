@@ -206,3 +206,24 @@ class CreateVolume(command.Command):
             parsed_args.storageservice, parsed_args.capacity,
             parsed_args.access_capabilities, parsed_args.capacity_sources,
             parsed_args.replica_infos, parsed_args.bootable)
+
+
+class DeleteVolume(command.Command):
+    """Delete a volume"""
+
+    _description = "Delete a volume"
+
+    def get_parser(self, prog_name):
+        parser = super(DeleteVolume, self).get_parser(prog_name)
+
+        parser.add_argument(
+            'volume',
+            metavar='<volume>',
+            help='ID of the volume.')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        rsd_client = self.app.client_manager.rsd
+        rsd_client.storage_service.delete_volume(parsed_args.volume)

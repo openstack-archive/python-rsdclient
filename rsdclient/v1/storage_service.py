@@ -103,3 +103,10 @@ class StorageServiceManager(base.Manager):
         volume_col.create_volume(capacity, access_capabilities,
                                  capacity_sources, replica_infos,
                                  bootable)
+
+    def delete_volume(self, volume_uri):
+        storage = self.client.get_storage_service(
+            self._extract_storage_service_uri(volume_uri))
+        volume = storage.volumes.get_member(volume_uri)
+
+        volume.delete()

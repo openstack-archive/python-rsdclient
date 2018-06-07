@@ -158,3 +158,17 @@ class StorageServiceTest(testtools.TestCase):
             '/redfish/v1/StorageServices/1-sv-1')
         mock_sorage.volumes.create_volume.assert_called_once_with(
             1024, ['Read'], [], [], True)
+
+    def test_delete_volume(self):
+        mock_sorage = mock.Mock()
+        self.client.get_storage_service.return_value = mock_sorage
+        mock_volume = mock.Mock()
+        mock_sorage.volumes.get_member.return_value = mock_volume
+
+        self.mgr.delete_volume(
+            '/redfish/v1/StorageServices/1-sv-1/Volumes/1-sv-1-vl-1')
+        self.mgr.client.get_storage_service.assert_called_once_with(
+            '/redfish/v1/StorageServices/1-sv-1')
+        mock_sorage.volumes.get_member.assert_called_once_with(
+            '/redfish/v1/StorageServices/1-sv-1/Volumes/1-sv-1-vl-1')
+        mock_volume.delete.assert_called_once()
