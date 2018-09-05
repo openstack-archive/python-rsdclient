@@ -45,16 +45,12 @@ class StorageServiceManager(base.Manager):
         storage = self.client.get_storage_service(storage_uri)
         storage_dict = utils.extract_attr(storage)
 
-        # Append sub-items attributions
-        storage_dict['remote_targets'] = [
-            utils.extract_attr(item)
-            for item in storage.remote_targets.get_members()]
-        storage_dict['physical_drives'] = [
-            utils.extract_attr(item)
-            for item in storage.physical_drives.get_members()]
-        storage_dict['logical_drives'] = [
-            utils.extract_attr(item)
-            for item in storage.logical_drives.get_members()]
+        # Append the member link of sub-resource
+        storage_dict['drives'] = storage.drives.members_identities
+        storage_dict['storage_pools'] = \
+            storage.storage_pools.members_identities
+        storage_dict['volumes'] = storage.volumes.members_identities
+        storage_dict['endpoints'] = storage.endpoints.members_identities
 
         return storage_dict
 

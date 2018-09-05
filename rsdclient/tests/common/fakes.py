@@ -87,98 +87,12 @@ FAKE_STORAGE_PYTHON_DICT = {
     'identity': '1',
     'name': 'Storage Service',
     'redfish_version': '1.0.0',
-    'remote_targets': [{
-        'addresses': [{
-            'iSCSI': {
-                'TargetIQN': 'base_logical_volume_target',
-                'TargetLUN': [{
-                    'LUN': 1,
-                    'LogicalDrive': {
-                        '@odata.id': '/redfish/v1/Services/1/LogicalDrives/2'
-                    }
-                }],
-                'TargetPortalIP': '10.2.0.4',
-                'TargetPortalPort': 3260
-            }
-        }],
-        'identity': '1',
-        'initiator': [{'iSCSI': {'InitiatorIQN': 'ALL'}}],
-        'redfish_version': '1.0.0',
-        'target_type': 'iSCSITargets'
-    }],
-    'physical_drives': [{
-        'capacity_gib': 931,
-        'drive_type': 'HDD',
-        'identity': '1',
-        'interface': 'SATA',
-        'manufacturer': 'fake manufacture',
-        'model': 'ST1000NM0033-9ZM',
-        'redfish_version': '1.0.0',
-        'rpm': 7200,
-        'serial_number': 'Z1W23Q3V'
-    }],
-    'logical_drives': [{
-        'bootable': True,
-        'capacity_gib': 5589,
-        'drive_type': 'LVM',
-        'identity': '2',
-        'image': 'fake image',
-        'mode': 'LVG',
-        'protected': False,
-        'redfish_version': '1.0.0',
-        'snapshot': False
-    }]
+    'drives': ['/redfish/v1/Chassis/5-c-1/Drives/5-c-1-d-1'],
+    'storage_pools':
+        ['/redfish/v1/StorageServices/5-sv-1/StoragePools/5-sv-1-sp-1'],
+    'endpoints': ['/redfish/v1/Fabrics/5-ff-1/Endpoints/5-ff-1-e-19'],
+    'volumes': ['/redfish/v1/StorageServices/5-sv-1/Volumes/5-sv-1-vl-1']
 }
-
-
-class FakeRemoteTarget(object):
-
-    def __init__(self):
-        self.addresses = [{
-            'iSCSI': {
-                'TargetIQN': 'base_logical_volume_target',
-                'TargetLUN': [{
-                    'LUN': 1,
-                    'LogicalDrive': {
-                        '@odata.id': '/redfish/v1/Services/1/LogicalDrives/2'
-                    }
-                }],
-                'TargetPortalIP': '10.2.0.4',
-                'TargetPortalPort': 3260
-            }
-        }]
-        self.identity = '1'
-        self.initiator = [{'iSCSI': {'InitiatorIQN': 'ALL'}}]
-        self.redfish_version = '1.0.0'
-        self.target_type = 'iSCSITargets'
-
-
-class FakePhysicalDrive(object):
-
-    def __init__(self):
-        self.capacity_gib = 931
-        self.drive_type = 'HDD'
-        self.identity = '1'
-        self.interface = 'SATA'
-        self.manufacturer = 'fake manufacture'
-        self.model = 'ST1000NM0033-9ZM'
-        self.redfish_version = '1.0.0'
-        self.rpm = 7200
-        self.serial_number = 'Z1W23Q3V'
-
-
-class FakeLogicalDrive(object):
-
-    def __init__(self):
-        self.bootable = True
-        self.capacity_gib = 5589
-        self.drive_type = 'LVM'
-        self.identity = '2'
-        self.image = 'fake image'
-        self.mode = 'LVG'
-        self.protected = False
-        self.redfish_version = '1.0.0'
-        self.snapshot = False
 
 
 class FakeStorageSerice(object):
@@ -189,12 +103,18 @@ class FakeStorageSerice(object):
         self.identity = '1'
         self.name = 'Storage Service'
         self.redfish_version = '1.0.0'
-        self.remote_targets = mock.Mock()
-        self.remote_targets.get_members.return_value = [FakeRemoteTarget()]
-        self.physical_drives = mock.Mock()
-        self.physical_drives.get_members.return_value = [FakePhysicalDrive()]
-        self.logical_drives = mock.Mock()
-        self.logical_drives.get_members.return_value = [FakeLogicalDrive()]
+        self.drives = mock.Mock()
+        self.drives.members_identities = \
+            ['/redfish/v1/Chassis/5-c-1/Drives/5-c-1-d-1']
+        self.storage_pools = mock.Mock()
+        self.storage_pools.members_identities = \
+            ['/redfish/v1/StorageServices/5-sv-1/StoragePools/5-sv-1-sp-1']
+        self.endpoints = mock.Mock()
+        self.endpoints.members_identities = \
+            ['/redfish/v1/Fabrics/5-ff-1/Endpoints/5-ff-1-e-19']
+        self.volumes = mock.Mock()
+        self.volumes.members_identities = \
+            ['/redfish/v1/StorageServices/5-sv-1/Volumes/5-sv-1-vl-1']
 
 
 FAKE_FABRIC_PYTHON_DICT = {
