@@ -42,7 +42,8 @@ class NodeTest(testtools.TestCase):
         mock_node_collection.compose_node.assert_called_once_with(
             name='fake_name', description='fake_description',
             processor_req=None, memory_req=None, remote_drive_req=None,
-            local_drive_req=None, ethernet_interface_req=None)
+            local_drive_req=None, ethernet_interface_req=None,
+            security_req=None)
         self.mgr.client.get_node.assert_called_once_with(result)
         mock_node.assemble_node.assert_called_once()
         self.assertEqual('/redfish/v1/Nodes/1', result)

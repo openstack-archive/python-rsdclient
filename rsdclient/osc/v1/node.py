@@ -25,7 +25,8 @@ ARGUMENTS_NAME_MAPPING = {
     'memory': 'memory_req',
     'remote_drives': 'remote_drive_req',
     'local_drives': 'local_drive_req',
-    'ethernet': 'ethernet_interface_req'
+    'ethernet': 'ethernet_interface_req',
+    'security': 'security_req'
 }
 
 
@@ -224,6 +225,26 @@ class ComposeNode(command.Command):
                   'EthernetInterfaces/LAN1"\n'
                   '  }\n'
                   '}]'))
+        parser.add_argument(
+            '--security',
+            dest='security',
+            type=json.loads,
+            metavar='<security requirements>',
+            help=('The security requirements of composed node. It may contain '
+                  'one or more optional attributes:\n'
+                  '  - TpmPresent: determine if Composed Node should be '
+                  'equipped with TPM module\n\n'
+                  '  - TpmInterfaceType: overrides TpmPresent parameter (if '
+                  'specified TPM module expected). System must be equipped '
+                  'with only defined TPM interface type.\n\n'
+                  '  - TxtEnabled: determine if Composed Node should have '
+                  'Trusted Execution Technology (TXT) mode enabled.\n\n'
+                  'For example:\n'
+                  '{\n'
+                  '  "TpmPresent": True,\n'
+                  '  "TpmInterfaceType": "TPM2_0",\n'
+                  '  "TxtEnabled": True\n'
+                  '}'))
         return parser
 
     def take_action(self, parsed_args):
