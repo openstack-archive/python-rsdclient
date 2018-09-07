@@ -29,12 +29,13 @@ class NodeManager(base.Manager):
 
     def compose(self, name=None, description=None, processor_req=None,
                 memory_req=None, remote_drive_req=None, local_drive_req=None,
-                ethernet_interface_req=None):
+                ethernet_interface_req=None, security_req=None):
         node_uri = self.client.get_node_collection().compose_node(
             name=name, description=description, processor_req=processor_req,
             memory_req=memory_req, remote_drive_req=remote_drive_req,
             local_drive_req=local_drive_req,
-            ethernet_interface_req=ethernet_interface_req)
+            ethernet_interface_req=ethernet_interface_req,
+            security_req=security_req)
 
         # Assume most of user will assemble node after composition, so assemble
         # node automatically here
