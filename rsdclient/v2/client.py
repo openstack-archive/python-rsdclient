@@ -15,9 +15,9 @@
 
 import rsd_lib
 
-from rsdclient.v1 import fabric
-from rsdclient.v1 import node
-from rsdclient.v1 import storage_service
+from rsdclient.v2 import fabric
+from rsdclient.v2 import node
+from rsdclient.v2 import storage_service
 
 
 class Client(object):

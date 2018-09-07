@@ -24,11 +24,11 @@ from rsdclient.common import utils as rsdclient_utils
 
 LOG = logging.getLogger(__name__)
 
-DEFAULT_API_VERSION = '1.2'
+DEFAULT_API_VERSION = '2.3'
 API_VERSION_OPTION = 'os_rsd_api_version'
 API_NAME = 'rsd'
 API_VERSIONS = {
-    '1.2': 'rsdclient.v1.client.Client',
+    '2.3': 'rsdclient.v2.client.Client',
 }
 
 

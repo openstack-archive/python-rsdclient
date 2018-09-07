@@ -17,7 +17,7 @@ import mock
 import testtools
 
 from rsdclient.tests.common import fakes
-from rsdclient.v1 import storage_service
+from rsdclient.v2 import storage_service
 
 
 class StorageServiceTest(testtools.TestCase):

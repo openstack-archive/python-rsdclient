@@ -16,7 +16,7 @@
 import mock
 import testtools
 
-from rsdclient.v1 import client
+from rsdclient.v2 import client
 
 
 class ClientInitializeTest(testtools.TestCase):

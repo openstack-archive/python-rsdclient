@@ -17,7 +17,7 @@ import mock
 import testtools
 
 from rsdclient.tests.common import fakes
-from rsdclient.v1 import fabric
+from rsdclient.v2 import fabric
 
 
 class FabricTest(testtools.TestCase):

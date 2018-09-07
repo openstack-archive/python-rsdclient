@@ -17,7 +17,7 @@ import mock
 import testtools
 
 from rsdclient.tests.common import fakes
-from rsdclient.v1 import node
+from rsdclient.v2 import node
 
 
 class NodeTest(testtools.TestCase):
