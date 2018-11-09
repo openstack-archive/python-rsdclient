@@ -16,7 +16,6 @@ repository is on `git.openstack.org
 <https://git.openstack.org/cgit/openstack/python-rsdclient>`_.
 
 * Free software: Apache license
-* Documentation: http://docs.openstack.org/developer/python-rsdclient
 * Source: http://git.openstack.org/cgit/openstack/python-rsdclient
 * Bugs: https://launchpad.net/python-rsdclient
 
