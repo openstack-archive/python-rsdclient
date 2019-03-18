@@ -89,3 +89,21 @@ class FabricTest(testtools.TestCase):
             '/redfish/v1/Fabrics/1-ff-1')
         mock_fabric.endpoints.get_member.assert_called_once_with(
             '/redfish/v1/Fabrics/1-ff-1/Endpoints/1-ff-1-e-2')
+
+    def test_create_endpoint(self):
+        mock_endpoint_collection = mock.Mock()
+        mock_endpoint_collection.create_endpoint.return_value = \
+            '/redfish/v1/Fabrics/1-ff-1/Endpoints/1'
+        mock_fabric = mock.Mock()
+        mock_fabric.endpoints = mock_endpoint_collection
+        self.client.get_fabric.return_value = mock_fabric
+
+        result = self.mgr.create_endpoint(
+            fabric_id='fake_fabric_id', connected_entities=[])
+        self.mgr.client.get_fabric.assert_called_once_with('fake_fabric_id')
+        mock_endpoint_collection.create_endpoint.assert_called_once_with(
+            [], identifiers=None, protocol=None,
+            pci_id=None, host_reservation_memory_bytes=None,
+            ip_transport_details=None, links=None, oem=None)
+
+        self.assertEqual('/redfish/v1/Fabrics/1-ff-1/Endpoints/1', result)

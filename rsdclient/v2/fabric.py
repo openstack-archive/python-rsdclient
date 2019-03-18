@@ -68,3 +68,18 @@ class FabricManager(base.Manager):
         endpoint = fabric.endpoints.get_member(endpoint_id)
 
         return utils.extract_attr(endpoint)
+
+    def create_endpoint(
+            self, fabric_id, connected_entities, identifiers=None,
+            protocol=None, pci_id=None, host_reservation_memory_bytes=None,
+            ip_transport_details=None, links=None, oem=None):
+        fabric = self.client.get_fabric(fabric_id)
+        endpoint_collection = fabric.endpoints
+
+        endpoint_uri = endpoint_collection.create_endpoint(
+            connected_entities, identifiers=identifiers, protocol=protocol,
+            pci_id=pci_id,
+            host_reservation_memory_bytes=host_reservation_memory_bytes,
+            ip_transport_details=ip_transport_details, links=links, oem=oem)
+
+        return endpoint_uri
