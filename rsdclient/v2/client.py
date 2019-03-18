@@ -18,6 +18,7 @@ import rsd_lib
 from rsdclient.v2 import fabric
 from rsdclient.v2 import node
 from rsdclient.v2 import storage_service
+from rsdclient.v2 import system
 
 
 class Client(object):
@@ -42,3 +43,4 @@ class Client(object):
         self.storage_service = \
             storage_service.StorageServiceManager(self.client)
         self.fabric = fabric.FabricManager(self.client)
+        self.system = system.SystemManager(self.client)
