@@ -341,17 +341,16 @@ class AttachEndpoint(command.Command):
             metavar='<resource uri>',
             help='URI of the specific resource to attach to node.')
         parser.add_argument(
-            '--capacity',
-            metavar='<size>',
-            type=int,
-            help='Required storage capacity in GiB.')
+            '--protocol',
+            metavar='<protocol>',
+            help='Specified protocol of attaching resource.')
         return parser
 
     def take_action(self, parsed_args):
         self.log.debug("take_action(%s)", parsed_args)
         rsd_client = self.app.client_manager.rsd
         rsd_client.node.attach(parsed_args.node, parsed_args.resource,
-                               parsed_args.capacity)
+                               parsed_args.protocol)
 
 
 class DetachEndpoint(command.Command):

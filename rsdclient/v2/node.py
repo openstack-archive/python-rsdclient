@@ -70,9 +70,9 @@ class NodeManager(base.Manager):
             nodes, ["Identity", "Name", "UUID", "Description"])
         return node_info_table
 
-    def attach(self, node_uri, endpoint=None, capacity=None):
+    def attach(self, node_uri, endpoint=None, protocol=None):
         node = self.client.get_node(node_uri)
-        node.attach_endpoint(endpoint, capacity)
+        node.attach_endpoint(endpoint, protocol)
 
     def detach(self, node_uri, endpoint):
         node = self.client.get_node(node_uri)
